@@ -1,0 +1,4 @@
+min-timer: 7200000
+max-timer: 43200000
+radius: 150
+default-dimension: 0
