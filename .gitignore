@@ -2,6 +2,7 @@
 target/
 
 # Visual Studio Code
+.vscode/
 .settings/
 .project
 .classpath
