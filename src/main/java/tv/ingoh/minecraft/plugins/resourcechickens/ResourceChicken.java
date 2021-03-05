@@ -39,7 +39,7 @@ public class ResourceChicken extends EntityChicken {
     boolean found;
 
     public enum Rarity {
-        COMMON(1,1, ChatColor.WHITE), UNCOMMON(1.5, 1.2, ChatColor.GREEN), RARE(2, 1.5, ChatColor.BLUE), EPIC(2.5, 2, ChatColor.DARK_PURPLE), LEGENDARY(5, 2.5, ChatColor.GOLD);
+        COMMON(1,1, ChatColor.WHITE), UNCOMMON(1.5, 1.2, ChatColor.GREEN), RARE(2, 1.5, ChatColor.BLUE), EPIC(2.5, 2, ChatColor.DARK_PURPLE), LEGENDARY(5, 2.5, ChatColor.GOLD), SPECIAL(1,1, ChatColor.RED);
         double dropMultiplier;
         double luckMultiplier;
         ChatColor color;
@@ -272,7 +272,7 @@ public class ResourceChicken extends EntityChicken {
                             type = t;
                         }
                     }
-                    Rarity rarity = Rarity.COMMON;
+                    Rarity rarity = Rarity.SPECIAL;
                     for (Rarity r : Rarity.values()) {
                         if (entity.getCustomName().contains(r.name())) {
                             rarity = r;

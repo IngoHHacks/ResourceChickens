@@ -12,7 +12,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
-import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -24,10 +23,6 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import net.minecraft.server.v1_16_R3.ContainerAnvil;
-import net.minecraft.server.v1_16_R3.EntityHuman;
-import net.minecraft.server.v1_16_R3.EntityPlayer;
-import net.minecraft.server.v1_16_R3.PacketPlayOutOpenWindow;
 import net.minecraft.server.v1_16_R3.WorldServer;
 import tv.ingoh.minecraft.plugins.resourcechickens.ResourceChicken.Rarity;
 import tv.ingoh.util.Pluralize;
@@ -209,7 +204,7 @@ public class Main extends JavaPlugin implements Listener {
                             type = t;
                         }
                     }
-                    Rarity rarity = Rarity.COMMON;
+                    Rarity rarity = Rarity.SPECIAL;
                     for (Rarity r : Rarity.values()) {
                         if (entity.getCustomName().contains(r.name())) {
                             rarity = r;
