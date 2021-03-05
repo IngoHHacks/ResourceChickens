@@ -2,17 +2,13 @@ main: tv.ingoh.minecraft.plugins.resourcechickens.Main
 name: ResourceChickens
 author: IngoHHacks
 softdepend: [Minecord]
-version: 1.0.1
+version: 1.0.2
 api-version: 1.16
 commands:
  rc:
   description: Summons a Resource Chicken.
   permission: resourcechickens.rc
   usage: /<command> (type)
- rcdata:
-  description: Shows information about the chicken data.
-  permission: resourcechickens.rcdata
-  usage: /<command>
  rctimer:
   description: Sets the minimum and maximum delay for the Resource Chicken timer.
   permission: resourcechickens.rctimer
@@ -25,6 +21,14 @@ commands:
   description: Shows the number of chickens still to be found.
   permission: resourcechickens.chickencount
   usage: /<command>
+ chickenrecent:
+  description: Shows the time at which the most recent chicken spawned.
+  permission: resourcechickens.chickenrecent
+  usage: /<command>
+ rcminecord:
+  description: Enables/disables Minecord integration
+  permission: resourcechickens.rcminecord
+  usage: /<command> <enabled/disabled>
 permissions:
  resourcechickens.*:
   description: All Resource Chickens permissions
@@ -38,6 +42,11 @@ permissions:
     description: Permission for using the /rctimer command.
    resourcechickens.rcradius:
     description: Permission for using the /rcradius command.
+   resourcechickens.rcminecord:
+    description: Permission for using the /rcminecord command.
    resourcechickens.chickencount:
     description: Permission for using the /chickencount command.
+    default: true
+   resourcechickens.chickenrecent:
+    description: Permission for using the /chickenrecent command.
     default: true

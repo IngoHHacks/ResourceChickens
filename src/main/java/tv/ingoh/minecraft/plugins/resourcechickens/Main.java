@@ -6,23 +6,35 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import net.minecraft.server.v1_16_R3.ContainerAnvil;
+import net.minecraft.server.v1_16_R3.EntityHuman;
+import net.minecraft.server.v1_16_R3.EntityPlayer;
+import net.minecraft.server.v1_16_R3.PacketPlayOutOpenWindow;
 import net.minecraft.server.v1_16_R3.WorldServer;
+import tv.ingoh.minecraft.plugins.resourcechickens.ResourceChicken.Rarity;
 import tv.ingoh.util.Pluralize;
 
 public class Main extends JavaPlugin implements Listener {
 
+    long recentTime = System.currentTimeMillis();
     JavaPlugin plugin;
     Config config;
     BukkitRunnable tickThread;
@@ -48,14 +60,24 @@ public class Main extends JavaPlugin implements Listener {
                     return null;
             }
         });
-        ResourceChicken.loadAll();
+        getCommand("rcminecord").setTabCompleter(new TabCompleter() {
+            @Override
+            public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+                if (args.length <= 1) {
+                    List<String> a = new ArrayList<>();
+                    if ("enabled".startsWith(args[args.length - 1].toString().toLowerCase())) a.add("enabled");
+                    if ("disabled".startsWith(args[args.length - 1].toString().toLowerCase())) a.add("disabled");
+                    return a;
+                } else
+                    return null;
+            }
+        });
         next = System.currentTimeMillis() + config.getRandomDelay();
         startTickThread();
     }
 
     @Override
     public void onDisable() {
-        ResourceChicken.saveAll();
         tickThread.cancel();
     }
 
@@ -70,10 +92,11 @@ public class Main extends JavaPlugin implements Listener {
                     World world = (CraftWorld) Bukkit.getServer().getWorlds().get(config.defaultDimension); // Default world
                     int x = (int) Math.round(2 * Math.random() * config.getRadius() + 160 - config.getRadius());
                     int z = (int) Math.round(2 * Math.random() * config.getRadius() + 208 - config.getRadius());
-                    ResourceChicken chicken = new ResourceChicken(new Location(world, x, 256, z), ResourceChickenType.random(), ResourceChicken.Rarity.random(), true);
+                    ResourceChicken chicken = new ResourceChicken(new Location(world, x, 256, z), ResourceChickenType.random(), ResourceChicken.Rarity.random(), true, config);
                     try {
                         WorldServer worldServer = ((CraftWorld) world).getHandle();
                         worldServer.addEntity(chicken);
+                        recentTime = System.currentTimeMillis();
                         Bukkit.getLogger().info("Summoned new [" + chicken.rarity.color + chicken.rarity.toString() + ChatColor.RESET + "] " + chicken.type.color + chicken.type.name + ChatColor.RESET + " at [" + x + ", " + z + "z]");
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -98,9 +121,9 @@ public class Main extends JavaPlugin implements Listener {
             ResourceChicken chicken;
             if (args.length == 1) {
                 String type = args[0];
-                chicken = new ResourceChicken(new Location(world, x, 256, z), ResourceChickenType.valueOf(type.toUpperCase()), ResourceChicken.Rarity.random(), true);
+                chicken = new ResourceChicken(new Location(world, x, 256, z), ResourceChickenType.valueOf(type.toUpperCase()), ResourceChicken.Rarity.random(), true, config);
             } else if (args.length == 0) {
-                chicken = new ResourceChicken(new Location(world, x, 256, z), ResourceChickenType.random(), ResourceChicken.Rarity.random(), true);
+                chicken = new ResourceChicken(new Location(world, x, 256, z), ResourceChickenType.random(), ResourceChicken.Rarity.random(), true, config);
             } else {
                 sender.sendMessage(ChatColor.RED + "Too many arguments");
                 return false;
@@ -114,11 +137,12 @@ public class Main extends JavaPlugin implements Listener {
                 sender.sendMessage(ChatColor.RED + "Failed to execute command");
                 return false;
             }
-        } else if (label.equalsIgnoreCase("rcdata")) {
-            ResourceChicken.printData(sender);
         } else if (label.equalsIgnoreCase("chickencount")) {
             int count = ResourceChicken.getCount();
             sender.sendMessage("There " + Pluralize.are(count) + " currently " + count + " chicken" + Pluralize.s(count) + " to be found");
+        } else if (label.equalsIgnoreCase("chickenrecent")) {
+            int time = (int)((System.currentTimeMillis() - recentTime) / 60000);
+            sender.sendMessage("The most recent chicken spawned " + time + " minute" + Pluralize.s(time) + " ago");
         } else if (label.equalsIgnoreCase("rctimer")) {
             if (args.length == 2) {
                 try {
@@ -132,6 +156,21 @@ public class Main extends JavaPlugin implements Listener {
                 }
             } else {
                 if (args.length > 2) sender.sendMessage(ChatColor.RED + "Too many arguments");
+                else sender.sendMessage(ChatColor.RED + "Too few arguments");
+                return false;
+            }
+        } else if (label.equalsIgnoreCase("rcminecord")) {
+            if (args.length == 1) {
+                try {
+                    config.minecord = Boolean.parseBoolean(args[0].toLowerCase().replace("enabled", "true").replace("disabled", "false"));
+                    config.save();
+                    if (config.minecord) sender.sendMessage("Enabled Minecord integration");
+                    else sender.sendMessage("Disabled Minecord integration");
+                } catch (NumberFormatException e) {
+                    sender.sendMessage(ChatColor.RED + "[" + args[0] + ", " + args[1] + "] is not a valid range.");
+                }
+            } else {
+                if (args.length > 1) sender.sendMessage(ChatColor.RED + "Too many arguments");
                 else sender.sendMessage(ChatColor.RED + "Too few arguments");
                 return false;
             }
@@ -155,6 +194,43 @@ public class Main extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
-        ResourceChicken.reInit(event.getChunk().getEntities());
+        ResourceChicken.reInit(event.getChunk().getEntities(), config);
     }
+
+    @EventHandler
+    public void interact(PlayerInteractEntityEvent e) {
+        if (e.getHand() == EquipmentSlot.HAND) {
+            Entity entity = e.getRightClicked();
+            if (entity.getType().equals(EntityType.CHICKEN)) {
+                if (entity.getCustomName() != null && entity.getCustomName().contains("§") && !e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.LEAD)) {
+                    ResourceChickenType type = ResourceChickenType.INVALID;
+                    for (ResourceChickenType t : ResourceChickenType.values()) {
+                        if (entity.getCustomName().contains(t.name)) {
+                            type = t;
+                        }
+                    }
+                    Rarity rarity = Rarity.COMMON;
+                    for (Rarity r : Rarity.values()) {
+                        if (entity.getCustomName().contains(r.name())) {
+                            rarity = r;
+                        }
+                    }
+                    e.getPlayer().sendMessage("Type: " + type.name());
+                    if (e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.PAPER)) {
+                        for (String s : type.listLoot()) {
+                            e.getPlayer().sendMessage(s);
+                        }
+                    }
+                    e.getPlayer().sendMessage("Rarity: " + rarity.name() + " Drops: " + rarity.dropMultiplier + "x Luck: " + rarity.luckMultiplier + "x");
+                    if (!e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.PAPER)) {
+                        e.getPlayer().sendMessage("Use " + Material.PAPER.name() + " to see the list of drops");
+                    }
+                    if (e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.NAME_TAG)) {
+                        e.setCancelled(true);
+                    }
+                }
+            }
+        }
+    }
+
 }

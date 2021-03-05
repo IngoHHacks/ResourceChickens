@@ -9,6 +9,7 @@ public class Config {
     int radius;
     JavaPlugin plugin;
     int defaultDimension;
+    boolean minecord;
 
     public Config(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -30,6 +31,7 @@ public class Config {
         plugin.getConfig().set("max-timer", max);
         plugin.getConfig().set("radius", radius);
         plugin.getConfig().set("default-dimension", defaultDimension);
+        plugin.getConfig().set("minecord", minecord);
         plugin.saveConfig();
 	}
 
@@ -38,6 +40,7 @@ public class Config {
         max = (int) plugin.getConfig().get("max-timer");
         radius = (int) plugin.getConfig().get("radius");
         defaultDimension = (int) plugin.getConfig().get("default-dimension");
+        minecord = (boolean) plugin.getConfig().get("minecord");
 	}
     
 }

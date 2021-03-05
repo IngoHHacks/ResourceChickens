@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bukkit.inventory.ItemStack;
 
+import net.md_5.bungee.api.ChatColor;
 import tv.ingoh.minecraft.plugins.resourcechickens.ResourceChicken.Rarity;
 
 public class LootGroup extends Drops {
@@ -48,4 +49,18 @@ public class LootGroup extends Drops {
         return items;
     }
 
+    @Override
+    ArrayList<String> list() {
+        ArrayList<String> items = new ArrayList<>();
+        items.add(ChatColor.DARK_PURPLE + "[LIST]");
+        double totalPrb = 0;
+        for (Loot l : loot) {
+            totalPrb += l.prb;
+        }
+        for (Loot l : loot) {
+            items.addAll(l.list(prb / totalPrb));
+        }
+        items.add(ChatColor.DARK_PURPLE + "[END OF LIST]");
+        return items;
+    }
 }

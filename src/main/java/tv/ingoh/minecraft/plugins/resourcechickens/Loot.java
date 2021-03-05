@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import net.md_5.bungee.api.ChatColor;
 import tv.ingoh.minecraft.plugins.resourcechickens.ResourceChicken.Rarity;
 
 public class Loot extends Drops {
@@ -66,4 +67,20 @@ public class Loot extends Drops {
         }
         return itemStacks;
     }
+
+    @Override
+    ArrayList<String> list() {
+        ArrayList<String> items = new ArrayList<>();
+        if (exponential) items.add(ChatColor.GREEN + "[" + Math.round(prb * 10000.0) / 100.0 + "%] " + ChatColor.GOLD + item.name().replace("_", " ") + ChatColor.RED + " (" + min + "-" + max + "*)");
+        else items.add(ChatColor.GREEN + "[" + Math.round(prb * 10000.0) / 100.0 + "%] " + ChatColor.GOLD + item.name().replace("_", " ") + ChatColor.RED + " (" + min + "-" + max + ")");
+        return items;
+    }
+
+    ArrayList<String> list(double p) {
+        ArrayList<String> items = new ArrayList<>();
+        if (exponential) items.add(ChatColor.GREEN + "[" + Math.round(prb * p* 10000.0) / 100.0 + "%] " + ChatColor.GOLD + item.name().replace("_", " ")     + ChatColor.RED + "(" + min + "-" + max + "*)");
+        else items.add(ChatColor.GREEN + "[" + Math.round(prb * p * 10000.0) / 100.0 + "%] " + ChatColor.GOLD + item.name().replace("_", " ") + ChatColor.RED + " (" + min + "-" + max + ")");
+        return items;
+    }
+
 }

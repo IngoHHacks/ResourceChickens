@@ -28,7 +28,8 @@ public enum ResourceChickenType {
     WITHER("Wither Chicken", ChatColor.WHITE, 0.05, List.of(new Loot(Material.SOUL_SAND, 1.0, 10, 20),new Loot(Material.WITHER_SKELETON_SKULL, 0.5, 1, 3),new Loot(Material.NETHER_STAR, 0.05, 1, 1))),
     MUSIC("Music Chicken", ChatColor.DARK_PURPLE, 0.05, List.of(new LootGroup(1,new Loot(Material.MUSIC_DISC_13, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_CAT, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_BLOCKS, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_CHIRP, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_FAR, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_MALL, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_MELLOHI, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_STAL, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_STRAD, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_WARD, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_11, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_WAIT, 1.0, 1, 1)), new LootGroup(0.2, 5,new Loot(Material.MUSIC_DISC_13, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_CAT, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_BLOCKS, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_CHIRP, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_FAR, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_MALL, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_MELLOHI, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_STAL, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_STRAD, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_WARD, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_11, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_WAIT, 1.0, 1, 1)),new LootGroup(0.2,new Loot(Material.MUSIC_DISC_13, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_CAT, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_BLOCKS, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_CHIRP, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_FAR, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_MALL, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_MELLOHI, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_STAL, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_STRAD, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_WARD, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_11, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_WAIT, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_PIGSTEP, 1.0, 1, 1)))),
     FOOD("Food Chicken", ChatColor.LIGHT_PURPLE, 0.05, List.of(new LootGroup(1.0,new Loot(Material.APPLE, 1.0, 10, 20), new Loot(Material.BREAD, 1.0, 10, 20), new Loot(Material.PORKCHOP, 1.0, 10, 20), new Loot(Material.COD, 1.0, 10, 20), new Loot(Material.SALMON, 1.0, 10, 20), new Loot(Material.TROPICAL_FISH, 1.0, 10, 20), new Loot(Material.PUFFERFISH, 1.0, 10, 20), new Loot(Material.COOKIE, 1.0, 10, 20), new Loot(Material.MELON_SLICE, 1.0, 10, 20), new Loot(Material.DRIED_KELP, 1.0, 10, 20), new Loot(Material.BEEF, 1.0, 10, 20), new Loot(Material.CHICKEN, 1.0, 10, 20), new Loot(Material.ROTTEN_FLESH, 1.0, 10, 20), new Loot(Material.SPIDER_EYE, 1.0, 10, 20), new Loot(Material.CARROT, 1.0, 10, 20), new Loot(Material.POTATO, 1.0, 10, 20), new Loot(Material.POISONOUS_POTATO, 1.0, 10, 20), new Loot(Material.RABBIT, 1.0, 10, 20), new Loot(Material.MUTTON, 1.0, 10, 20), new Loot(Material.BEETROOT, 1.0, 10, 20), new Loot(Material.SWEET_BERRIES, 1.0, 10, 20), new Loot(Material.HONEY_BOTTLE, 1.0, 10, 20)),new LootGroup(0.5,new Loot(Material.COOKED_PORKCHOP, 1.0, 1, 3), new Loot(Material.GOLDEN_APPLE, 1.0, 1, 3), new Loot(Material.GOLDEN_CARROT, 1.0, 1, 3), new Loot(Material.COOKED_COD, 1.0, 1, 3), new Loot(Material.COOKED_SALMON, 1.0, 1, 3), new Loot(Material.COOKED_BEEF, 1.0, 1, 3), new Loot(Material.COOKED_CHICKEN, 1.0, 1, 3), new Loot(Material.BAKED_POTATO, 1.0, 1, 3), new Loot(Material.PUMPKIN_PIE, 1.0, 1, 3), new Loot(Material.COOKED_RABBIT, 1.0, 1, 3), new Loot(Material.RABBIT_STEW, 1.0, 1, 3), new Loot(Material.COOKED_MUTTON, 1.0, 1, 3)),new Loot(Material.ENCHANTED_GOLDEN_APPLE, 0.01, 1, 1))),
-    UNDYING("Undying Chicken", ChatColor.GREEN, 0.05, List.of(new Loot(Material.TOTEM_OF_UNDYING, 1.0, 1, 1),new Loot(Material.DIAMOND, 0.25, 1, 3),new LootGroup(0.01,new Loot(Material.ENCHANTED_GOLDEN_APPLE, 1.0, 1, 1), new Loot(Material.NETHERITE_INGOT, 1.0, 1, 1), new Loot(Material.DIAMOND_BLOCK, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_PIGSTEP, 1.0, 1, 1), new Loot(Material.HEART_OF_THE_SEA, 1.0, 1, 1))));
+    UNDYING("Undying Chicken", ChatColor.GREEN, 0.05, List.of(new Loot(Material.TOTEM_OF_UNDYING, 1.0, 1, 1),new Loot(Material.DIAMOND, 0.25, 1, 3),new LootGroup(0.01,new Loot(Material.ENCHANTED_GOLDEN_APPLE, 1.0, 1, 1), new Loot(Material.NETHERITE_INGOT, 1.0, 1, 1), new Loot(Material.DIAMOND_BLOCK, 1.0, 1, 1), new Loot(Material.MUSIC_DISC_PIGSTEP, 1.0, 1, 1), new Loot(Material.HEART_OF_THE_SEA, 1.0, 1, 1)))),
+    INVALID("Invalid Chicken", ChatColor.DARK_RED, 0, List.of(new Loot(Material.BRICK, 1.0, 1, 1)));
 
     String name;
     ChatColor color;
@@ -48,6 +49,15 @@ public enum ResourceChickenType {
             drops.addAll(l.getLoot(isBurning, rarity));
         }
         return drops;
+    }
+
+    
+    public ArrayList<String> listLoot() {
+        ArrayList<String> strings = new ArrayList<>();
+        loot.forEach(l -> {
+            strings.addAll(l.list());
+        });
+        return strings;
     }
 
 	public static ResourceChickenType random() {
