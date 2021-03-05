@@ -22,8 +22,8 @@
       <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
     </repository>
 		<repository>
-		    <id>jitpack.io</id>
-		    <url>https://jitpack.io</url>
+		  <id>jitpack.io</id>
+		  <url>https://jitpack.io</url>
 		</repository>
   </repositories>
   <dependencies>
@@ -38,6 +38,11 @@
       <artifactId>spigot</artifactId>
       <version>1.16.4</version>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.github.StarsDown64</groupId>
+      <artifactId>Minecord</artifactId>
+      <version>pre2</version>
     </dependency>
   </dependencies>
   <build>

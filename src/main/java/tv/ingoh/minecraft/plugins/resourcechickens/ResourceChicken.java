@@ -26,6 +26,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
 
+import io.github.starsdown64.Minecord.api.ExternalMessageEvent;
 //  import io.github.starsdown64.Minecord.MinecordMessageEvent;
 import net.minecraft.server.v1_16_R3.BlockPosition;
 import net.minecraft.server.v1_16_R3.ChatComponentText;
@@ -97,6 +98,12 @@ public class ResourceChicken extends EntityChicken {
         if (isNew) {
             Bukkit.broadcastMessage(ChatColor.AQUA + "A chicken appeared near spawn!");
             Bukkit.broadcastMessage(ChatColor.AQUA + "Kill it for a reward!");
+            if (Bukkit.getServer().getPluginManager().getPlugin("Minecord") != null) {
+                ExternalMessageEvent messageEvent = new ExternalMessageEvent("A chicken appeared near spawn!");
+                Bukkit.getServer().getPluginManager().callEvent(messageEvent);
+                messageEvent = new ExternalMessageEvent("Kill it for a reward!");
+                Bukkit.getServer().getPluginManager().callEvent(messageEvent);
+            }
         }
 
         loc.getChunk().load();
@@ -233,8 +240,10 @@ public class ResourceChicken extends EntityChicken {
         }
         PacketPlayOutChat packet = new PacketPlayOutChat(damagesource.getLocalizedDeathMessage(this), ChatMessageType.SYSTEM, uniqueID);
         Bukkit.getOnlinePlayers().forEach(player -> ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet));
-//      MinecordMessageEvent minecordMessageEvent = new MinecordMessageEvent(damagesource.getLocalizedDeathMessage(this).getString());
-//      Bukkit.getPluginManager().callEvent(minecordMessageEvent);
+        if (Bukkit.getServer().getPluginManager().getPlugin("Minecord") != null) {
+            ExternalMessageEvent messageEvent = new ExternalMessageEvent(damagesource.getLocalizedDeathMessage(this).getString());
+            Bukkit.getPluginManager().callEvent(messageEvent);
+        }
 
         loadedChickens.remove(this);
         chickens.removeIf(s -> s.uuid.equals(uniqueID));
