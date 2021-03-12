@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.bukkit.inventory.ItemStack;
 
-import net.md_5.bungee.api.ChatColor;
+import org.bukkit.ChatColor;
 import tv.ingoh.minecraft.plugins.resourcechickens.ResourceChicken.Rarity;
 
 public class LootGroup extends Drops {

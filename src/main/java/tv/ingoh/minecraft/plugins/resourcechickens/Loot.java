@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import net.md_5.bungee.api.ChatColor;
+import org.bukkit.ChatColor;
 import tv.ingoh.minecraft.plugins.resourcechickens.ResourceChicken.Rarity;
 
 public class Loot extends Drops {
@@ -47,11 +47,14 @@ public class Loot extends Drops {
 
     public ArrayList<ItemStack> getLoot(boolean isBurning, Rarity rarity, boolean force) {
         Material tItem = item;
+        
+        // Change sand type items to red sand type if burning
         if (item.equals(Material.SAND) && isBurning) tItem = Material.RED_SAND;
         else if (item.equals(Material.SANDSTONE) && isBurning) tItem = Material.RED_SANDSTONE;
         else if (item.equals(Material.CUT_SANDSTONE) && isBurning) tItem = Material.CUT_RED_SANDSTONE;
         else if (item.equals(Material.CHISELED_SANDSTONE) && isBurning) tItem = Material.CHISELED_RED_SANDSTONE;
         else if (item.equals(Material.SMOOTH_SANDSTONE) && isBurning) tItem = Material.SMOOTH_RED_SANDSTONE;
+
         int count = min;
         if (exponential) while (Math.random() < expIncPrb && count < max);
         else count = (int)(Math.round(Math.random() * (max - min)) + min);

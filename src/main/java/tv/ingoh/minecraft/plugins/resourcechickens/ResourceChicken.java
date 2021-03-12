@@ -1,9 +1,7 @@
 package tv.ingoh.minecraft.plugins.resourcechickens;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -18,7 +16,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.starsdown64.Minecord.api.ExternalMessageEvent;
-import net.minecraft.server.v1_16_R3.BlockPosition;
 import net.minecraft.server.v1_16_R3.ChatComponentText;
 import net.minecraft.server.v1_16_R3.ChatMessageType;
 import net.minecraft.server.v1_16_R3.DamageSource;
@@ -31,18 +28,25 @@ import net.minecraft.server.v1_16_R3.WorldServer;
 
 public class ResourceChicken extends EntityChicken {
 
-    private static ArrayList<ResourceChicken> loadedChickens = new ArrayList<>();
+    private static ArrayList<LoadedChicken> loadedChickens = new ArrayList<>();
 
+    Config config;
     ResourceChickenType type;
     long nextEvent;
     Rarity rarity;
     boolean found;
+    long spawnTime;
+    float damageBuffer = 0;
+    long damageBufferTime = 0;
+    DamageSource damageBufferSource;
+    net.minecraft.server.v1_16_R3.Entity prevLeashHolder;
 
     public enum Rarity {
         COMMON(1,1, ChatColor.WHITE), UNCOMMON(1.5, 1.2, ChatColor.GREEN), RARE(2, 1.5, ChatColor.BLUE), EPIC(2.5, 2, ChatColor.DARK_PURPLE), LEGENDARY(5, 2.5, ChatColor.GOLD), SPECIAL(1,1, ChatColor.RED);
         double dropMultiplier;
         double luckMultiplier;
         ChatColor color;
+
         Rarity(double dropMultiplier, double luckMultiplier, ChatColor color) {
             this.dropMultiplier = dropMultiplier;
             this.luckMultiplier = luckMultiplier;
@@ -57,11 +61,14 @@ public class ResourceChicken extends EntityChicken {
             else if (rng < 0.31) return UNCOMMON;
             else return COMMON;
         }
+
     }
 
 
     public ResourceChicken(Location loc, ResourceChickenType type, Rarity rarity, boolean isNew, Config config) {
         super(EntityTypes.CHICKEN, ((CraftWorld) loc.getWorld()).getHandle());
+
+        this.config = config;
         
         // Find highest non-air block and spawn on top of it
         if (isNew) {
@@ -74,13 +81,16 @@ public class ResourceChicken extends EntityChicken {
         else setPosition(loc.getX(), loc.getY(), loc.getZ());
         setYawPitch(loc.getYaw(), loc.getPitch());
         setCustomName(new ChatComponentText("[" + rarity.color + rarity.toString() + ChatColor.RESET + "] " + type.color + type.name + ChatColor.RESET));
+        
+        spawnTime = System.currentTimeMillis();
+
         this.type = type;
         this.rarity = rarity;
         if (type.equals(ResourceChickenType.UNDYING)) this.setSlot(EnumItemSlot.MAINHAND, new net.minecraft.server.v1_16_R3.ItemStack(Items.TOTEM_OF_UNDYING, 1));
         nextEvent = (long) (System.currentTimeMillis() + 10000 * Math.random());
         found = !isNew;
 
-        loadedChickens.add(this);
+        loadedChickens.add(new LoadedChicken(this, this.getUniqueID()));
 
         if (isNew) {
             Bukkit.broadcastMessage(ChatColor.AQUA + "A chicken appeared near spawn!");
@@ -99,6 +109,7 @@ public class ResourceChicken extends EntityChicken {
     @Override
     public void tick() {
         super.tick();
+
         switch (type) {
             case DIAMOND:
                 world.getWorld().spawnParticle(Particle.ITEM_CRACK,
@@ -198,15 +209,24 @@ public class ResourceChicken extends EntityChicken {
                         new Location(world.getWorld(), locX(), locY() + 0.35, locZ()), 10, 2.5, 2.5, 2.5, 0.1);
                 if (System.currentTimeMillis() > nextEvent) {
                     nextEvent = (long) (500 + System.currentTimeMillis() + 4500 * Math.random());
-                    Location l;
-                    l = new Location(world.getWorld(), Math.round(locX() - 8 + Math.random() * 16.0) + 0.5, Math.round(locY() - 4 + Math.random() * 8.0), Math.round(locZ() - 8 + Math.random() * 16.0) + 0.5);
+                    Location l = new Location(world.getWorld(), Math.round(locX() - 8 + Math.random() * 16.0) + 0.5, Math.round(locY() - 4 + Math.random() * 8.0), Math.round(locZ() - 8 + Math.random() * 16.0) + 0.5);
                     if (l.getBlock().getType().equals(Material.AIR) && l.getY() > 0 && l.getY() < 256) teleportAndSync(l.getX(), l.getY(), l.getZ());
+                }
+                if (damageBufferTime != 0 && System.currentTimeMillis() > damageBufferTime && System.currentTimeMillis() > spawnTime + 5000) {
+                    damageEntity(damageBufferSource, damageBuffer);
                 }
                 break;
             case WITHER:
                 world.getWorld().spawnParticle(Particle.REDSTONE,
                         new Location(world.getWorld(), locX(), locY() + 0.35, locZ()), 3, 0.5, 0.5, 0.5, 1,
                         new Particle.DustOptions(Color.BLACK, 1));
+                break;
+            case STABLE:
+                world.getWorld().spawnParticle(Particle.ENCHANTMENT_TABLE,
+                        new Location(world.getWorld(), locX(), locY() + 0.35, locZ()), 10, 2.5, 2.5, 2.5, 0.1);
+                if (damageBufferTime != 0 && System.currentTimeMillis() > damageBufferTime && System.currentTimeMillis() > spawnTime + 5000) {
+                    damageEntity(damageBufferSource, damageBuffer);
+                }
                 break;
             default:
                 break;
@@ -232,36 +252,25 @@ public class ResourceChicken extends EntityChicken {
             Bukkit.getPluginManager().callEvent(messageEvent);
         }
 
-        loadedChickens.remove(this);
-    }
-
-    @Override
-    public net.minecraft.server.v1_16_R3.Entity teleportTo(WorldServer worldserver, BlockPosition location) {
-        if (world.getWorld().equals(worldserver.getWorld())) {
-            return super.teleportTo(worldserver, location);
-        } else return this;
-    }
-
-    static class ResourceChickenData implements Serializable {
-        private static final long serialVersionUID = -1967119010153490541L;
-        ResourceChickenType type;
-        Rarity rarity;
-        UUID uuid;
-        public ResourceChickenData(ResourceChickenType type, Rarity rarity, UUID uuid) {
-            this.type = type;
-            this.rarity = rarity;
-            this.uuid = uuid;
+        LoadedChicken c = null;
+        for (LoadedChicken chicken : loadedChickens) {
+            if (chicken.uuid.equals(uniqueID)) {
+                c = chicken;
+                break;
+            }                    
         }
+        if (c != null) loadedChickens.remove(c);
     }
 
 	public static int getCount() {
         int c = 0;
-		for (ResourceChicken resourceChicken : loadedChickens) {
-            if (!resourceChicken.found) c++;
+		for (LoadedChicken resourceChicken : loadedChickens) {
+            if (!resourceChicken.chicken.found && resourceChicken.chicken.spawnTime > System.currentTimeMillis() - 7200000) c++;
         }
         return c;
 	}
 
+    // Runs when a chunk is loaded; Deletes every normal chicken and spawns a Resource Chicken in its place.
 	public static void reInit(Entity[] entities, Config config) {
         for (Entity entity : entities) {
             if (entity.getType().equals(EntityType.CHICKEN)) {
@@ -291,4 +300,48 @@ public class ResourceChicken extends EntityChicken {
             }
         }
 	}
+
+    public static void deInit(Entity[] entities, Config config) {
+        for (Entity entity : entities) {
+            if (entity.getType().equals(EntityType.CHICKEN)) {
+                if (entity.getCustomName() != null && entity.getCustomName().contains("§")) {
+                    LoadedChicken c = null;
+                    for (LoadedChicken chicken : loadedChickens) {
+                        if (chicken.uuid.equals(entity.getUniqueId())) {
+                            c = chicken;
+                            break;
+                        }                    
+                    }
+                    if (c != null) loadedChickens.remove(c);
+                }
+            }
+        }
+    }
+
+    // Code for stabilizing Unstable Chickens when struck with lightning
+    @Override
+    public boolean damageEntity(DamageSource damagesource, float f) {
+        if ((!type.equals(ResourceChickenType.UNSTABLE) && !type.equals(ResourceChickenType.STABLE)) || (damageBufferTime != 0 && System.currentTimeMillis() > damageBufferTime && System.currentTimeMillis() > spawnTime + 5000)) {
+            damageBufferTime = 0;
+            damageBuffer = 0;
+            return super.damageEntity(damagesource, f);
+        } else {
+            if (System.currentTimeMillis() > spawnTime + 5000) {
+                if (damageBuffer == 0) {
+                    damageBufferTime = System.currentTimeMillis() + 100;
+                    damageBufferSource = damagesource;
+                }
+                damageBuffer += f;
+                if (damagesource.equals(DamageSource.LIGHTNING)) {
+                        if (type.equals(ResourceChickenType.UNSTABLE)) type = ResourceChickenType.STABLE;
+                        else if (type.equals(ResourceChickenType.STABLE)) type = ResourceChickenType.UNSTABLE;
+                        spawnTime = System.currentTimeMillis();
+                        damageBuffer = 0;
+                        damageBufferTime = 0;
+                        setCustomName(new ChatComponentText("[" + rarity.color + rarity.toString() + ChatColor.RESET + "] " + type.color + type.name + ChatColor.RESET));
+                }
+            }
+            return true;
+        }
+    }
 }

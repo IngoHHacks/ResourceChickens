@@ -17,8 +17,11 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerLeashEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.vehicle.VehicleEnterEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
+import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -94,8 +97,8 @@ public class Main extends JavaPlugin implements Listener {
                         recentTime = System.currentTimeMillis();
                         Bukkit.getLogger().info("Summoned new [" + chicken.rarity.color + chicken.rarity.toString() + ChatColor.RESET + "] " + chicken.type.color + chicken.type.name + ChatColor.RESET + " at [" + x + ", " + z + "z]");
                     } catch (Exception e) {
-                        e.printStackTrace();
                         Bukkit.getLogger().warning("Failed to summon chicken");
+                        e.printStackTrace();
                     }
                 }
             }
@@ -193,6 +196,12 @@ public class Main extends JavaPlugin implements Listener {
     }
 
     @EventHandler
+    public void onChunkLoad(ChunkUnloadEvent event) {
+        ResourceChicken.deInit(event.getChunk().getEntities(), config);
+    }
+
+
+    @EventHandler
     public void interact(PlayerInteractEntityEvent e) {
         if (e.getHand() == EquipmentSlot.HAND) {
             Entity entity = e.getRightClicked();
@@ -228,4 +237,23 @@ public class Main extends JavaPlugin implements Listener {
         }
     }
 
+    @EventHandler
+    public void onVehicleEnter(VehicleEnterEvent event) {
+        Entity entity = event.getEntered();
+        if (entity.getType().equals(EntityType.CHICKEN)) {
+            if (entity.getCustomName() != null && entity.getCustomName().contains("§")) {
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerLeashEntity(PlayerLeashEntityEvent event) {
+        Entity entity = event.getEntity();
+        if (entity.getType().equals(EntityType.CHICKEN) && event.getLeashHolder().getType().equals(EntityType.LEASH_HITCH)){
+            if (entity.getCustomName() != null && entity.getCustomName().contains("§")) {
+                event.setCancelled(true);
+            }
+        }
+    }
 }
