@@ -19,7 +19,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerLeashEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.vehicle.VehicleEnterEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -233,16 +232,6 @@ public class Main extends JavaPlugin implements Listener {
                         e.setCancelled(true);
                     }
                 }
-            }
-        }
-    }
-
-    @EventHandler
-    public void onVehicleEnter(VehicleEnterEvent event) {
-        Entity entity = event.getEntered();
-        if (entity.getType().equals(EntityType.CHICKEN)) {
-            if (entity.getCustomName() != null && entity.getCustomName().contains("§")) {
-                event.setCancelled(true);
             }
         }
     }

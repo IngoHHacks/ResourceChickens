@@ -1,7 +1,7 @@
 package tv.ingoh.minecraft.plugins.resourcechickens;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -10,9 +10,13 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_16_R3.entity.CraftBoat;
+import org.bukkit.craftbukkit.v1_16_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
+import org.bukkit.entity.Chicken;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Vehicle;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.starsdown64.Minecord.api.ExternalMessageEvent;
@@ -28,7 +32,7 @@ import net.minecraft.server.v1_16_R3.WorldServer;
 
 public class ResourceChicken extends EntityChicken {
 
-    private static ArrayList<LoadedChicken> loadedChickens = new ArrayList<>();
+    private static LinkedList<LoadedChicken> loadedChickens = new LinkedList<>();
 
     Config config;
     ResourceChickenType type;
@@ -39,7 +43,6 @@ public class ResourceChicken extends EntityChicken {
     float damageBuffer = 0;
     long damageBufferTime = 0;
     DamageSource damageBufferSource;
-    net.minecraft.server.v1_16_R3.Entity prevLeashHolder;
 
     public enum Rarity {
         COMMON(1,1, ChatColor.WHITE), UNCOMMON(1.5, 1.2, ChatColor.GREEN), RARE(2, 1.5, ChatColor.BLUE), EPIC(2.5, 2, ChatColor.DARK_PURPLE), LEGENDARY(5, 2.5, ChatColor.GOLD), SPECIAL(1,1, ChatColor.RED);
@@ -291,6 +294,11 @@ public class ResourceChicken extends EntityChicken {
                     try {
                         WorldServer worldServer = ((CraftWorld) entity.getWorld()).getHandle();
                         worldServer.addEntity(chicken);
+                        if (entity.isInsideVehicle()) {
+                            Entity v = entity.getVehicle();
+                            entity.leaveVehicle();
+                            v.addPassenger(chicken.getBukkitEntity());
+                        } 
                         entity.remove();
                     } catch (Exception e) {
                         Bukkit.getLogger().warning("Failed to re-initialize " + entity.getCustomName());
