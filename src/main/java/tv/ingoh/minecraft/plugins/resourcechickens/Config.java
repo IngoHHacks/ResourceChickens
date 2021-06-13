@@ -10,6 +10,7 @@ public class Config {
     JavaPlugin plugin;
     int defaultDimension;
     boolean minecord;
+    boolean mchickens;
 
     public Config(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -26,12 +27,17 @@ public class Config {
         return radius;
 	}
 
+    public boolean useMultipleChickens() {
+        return mchickens;
+    }
+
 	public void save() {
         plugin.getConfig().set("min-timer", min);
         plugin.getConfig().set("max-timer", max);
         plugin.getConfig().set("radius", radius);
         plugin.getConfig().set("default-dimension", defaultDimension);
         plugin.getConfig().set("minecord", minecord);
+        plugin.getConfig().set("multiple-chickens", mchickens);
         plugin.saveConfig();
 	}
 
@@ -41,6 +47,7 @@ public class Config {
         radius = (int) plugin.getConfig().get("radius");
         defaultDimension = (int) plugin.getConfig().get("default-dimension");
         minecord = (boolean) plugin.getConfig().get("minecord");
+        mchickens = (boolean) plugin.getConfig().get("multiple-chickens");
 	}
     
 }

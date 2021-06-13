@@ -3,3 +3,4 @@ max-timer: 43200000
 radius: 150
 default-dimension: 0
 minecord: true
+multiple-chickens: false

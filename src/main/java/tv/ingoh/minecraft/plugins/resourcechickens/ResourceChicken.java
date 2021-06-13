@@ -10,13 +10,9 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
-import org.bukkit.craftbukkit.v1_16_R3.entity.CraftBoat;
-import org.bukkit.craftbukkit.v1_16_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
-import org.bukkit.entity.Chicken;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Vehicle;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.starsdown64.Minecord.api.ExternalMessageEvent;
@@ -56,7 +52,7 @@ public class ResourceChicken extends EntityChicken {
             this.color = color;
         }
 
-        static Rarity random() {
+        static Rarity randomRarity() {
             double rng = Math.random();
             if (rng < 0.01) return LEGENDARY;
             else if (rng < 0.04) return EPIC;
@@ -67,8 +63,17 @@ public class ResourceChicken extends EntityChicken {
 
     }
 
+    static int randomCount() {
+        double rng = Math.random();
+        if (rng < 0.01) return 5;
+        else if (rng < 0.04) return 4;
+        else if (rng < 0.10) return 3;
+        else if (rng < 0.31) return 2;
+        else return 1;
+    }
 
-    public ResourceChicken(Location loc, ResourceChickenType type, Rarity rarity, boolean isNew, Config config) {
+
+    public ResourceChicken(Main pl, Location loc, ResourceChickenType type, Rarity rarity, boolean isNew, Config config) {
         super(EntityTypes.CHICKEN, ((CraftWorld) loc.getWorld()).getHandle());
 
         this.config = config;
@@ -96,14 +101,7 @@ public class ResourceChicken extends EntityChicken {
         loadedChickens.add(new LoadedChicken(this, this.getUniqueID()));
 
         if (isNew) {
-            Bukkit.broadcastMessage(ChatColor.AQUA + "A chicken appeared near spawn!");
-            Bukkit.broadcastMessage(ChatColor.AQUA + "Kill it for a reward!");
-            if (config.minecord && Bukkit.getServer().getPluginManager().getPlugin("Minecord") != null) {
-                ExternalMessageEvent messageEvent = new ExternalMessageEvent("A chicken appeared near spawn!");
-                Bukkit.getServer().getPluginManager().callEvent(messageEvent);
-                messageEvent = new ExternalMessageEvent("Kill it for a reward!");
-                Bukkit.getServer().getPluginManager().callEvent(messageEvent);
-            }
+            pl.scheduleBroadcast();
         }
 
         loc.getChunk().load();
@@ -268,13 +266,13 @@ public class ResourceChicken extends EntityChicken {
 	public static int getCount() {
         int c = 0;
 		for (LoadedChicken resourceChicken : loadedChickens) {
-            if (!resourceChicken.chicken.found && resourceChicken.chicken.spawnTime > System.currentTimeMillis() - 7200000) c++;
+            if (!resourceChicken.chicken.found && resourceChicken.chicken.spawnTime > System.currentTimeMillis() - 172800000) c++;
         }
         return c;
 	}
 
     // Runs when a chunk is loaded; Deletes every normal chicken and spawns a Resource Chicken in its place.
-	public static void reInit(Entity[] entities, Config config) {
+	public static void reInit(Main pl, Entity[] entities, Config config) {
         for (Entity entity : entities) {
             if (entity.getType().equals(EntityType.CHICKEN)) {
                 if (entity.getCustomName() != null && entity.getCustomName().contains("§")) {
@@ -290,7 +288,7 @@ public class ResourceChicken extends EntityChicken {
                             rarity = r;
                         }
                     }
-                    ResourceChicken chicken = new ResourceChicken(entity.getLocation(), type, rarity, false, config);
+                    ResourceChicken chicken = new ResourceChicken(pl, entity.getLocation(), type, rarity, false, config);
                     try {
                         WorldServer worldServer = ((CraftWorld) entity.getWorld()).getHandle();
                         worldServer.addEntity(chicken);

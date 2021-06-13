@@ -25,6 +25,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import io.github.starsdown64.Minecord.api.ExternalMessageEvent;
 import net.minecraft.server.v1_16_R3.WorldServer;
 import tv.ingoh.minecraft.plugins.resourcechickens.ResourceChicken.Rarity;
 import tv.ingoh.util.Pluralize;
@@ -36,6 +37,9 @@ public class Main extends JavaPlugin implements Listener {
     Config config;
     BukkitRunnable tickThread;
     long next;
+
+    boolean broadcast;
+    int bcCount;
 
     @Override
     public void onEnable() {
@@ -78,18 +82,41 @@ public class Main extends JavaPlugin implements Listener {
         tickThread.cancel();
     }
 
-    // Runs every tick
-    public void startTickThread() {
-        tickThread = new BukkitRunnable() {
+    class ChickenRunnable extends BukkitRunnable {
 
-            @Override
-            public void run() {
-                if (System.currentTimeMillis() > next) {
-                    next = System.currentTimeMillis() + config.getRandomDelay();
-                    World world = (CraftWorld) Bukkit.getServer().getWorlds().get(config.defaultDimension); // Default world
+        Main pl;
+
+        public ChickenRunnable(Main pl) {
+            this.pl = pl;
+        }
+
+        @Override
+        public void run() {
+            if (broadcast) {
+                if (bcCount == 1) {
+                    Bukkit.broadcastMessage(ChatColor.AQUA + "A chicken appeared near spawn!");
+                    Bukkit.broadcastMessage(ChatColor.AQUA + "Kill it for a reward!");
+                } else {
+                    Bukkit.broadcastMessage(ChatColor.AQUA + "" + bcCount + " chickens appeared near spawn!");
+                    Bukkit.broadcastMessage(ChatColor.AQUA + "Kill them for a rewards!");
+                }
+                if (config.minecord && Bukkit.getServer().getPluginManager().getPlugin("Minecord") != null) {
+                    ExternalMessageEvent messageEvent = new ExternalMessageEvent("A chicken appeared near spawn!");
+                    Bukkit.getServer().getPluginManager().callEvent(messageEvent);
+                    messageEvent = new ExternalMessageEvent("Kill it for a reward!");
+                    Bukkit.getServer().getPluginManager().callEvent(messageEvent);
+                }
+                broadcast = false;
+                bcCount = 0;
+            }
+            if (System.currentTimeMillis() > next) {
+                int count = config.mchickens ? ResourceChicken.randomCount() : 1;
+                next = System.currentTimeMillis() + config.getRandomDelay();
+                World world = (CraftWorld) Bukkit.getServer().getWorlds().get(config.defaultDimension); // Default world
+                for (int i = 0; i < count; i++) {
                     int x = (int) Math.round(2 * Math.random() * config.getRadius() + 160 - config.getRadius());
                     int z = (int) Math.round(2 * Math.random() * config.getRadius() + 208 - config.getRadius());
-                    ResourceChicken chicken = new ResourceChicken(new Location(world, x, 256, z), ResourceChickenType.random(), ResourceChicken.Rarity.random(), true, config);
+                    ResourceChicken chicken = new ResourceChicken(pl, new Location(world, x, 256, z), ResourceChickenType.random(), ResourceChicken.Rarity.randomRarity(), true, config);
                     try {
                         WorldServer worldServer = ((CraftWorld) world).getHandle();
                         worldServer.addEntity(chicken);
@@ -101,7 +128,12 @@ public class Main extends JavaPlugin implements Listener {
                     }
                 }
             }
-        };
+        }
+    }
+
+    // Runs every tick
+    public void startTickThread() {
+        tickThread = new ChickenRunnable(this);
         tickThread.runTaskTimer(this, 0, 1);
     }
 
@@ -118,9 +150,9 @@ public class Main extends JavaPlugin implements Listener {
             ResourceChicken chicken;
             if (args.length == 1) {
                 String type = args[0];
-                chicken = new ResourceChicken(new Location(world, x, 256, z), ResourceChickenType.valueOf(type.toUpperCase()), ResourceChicken.Rarity.random(), true, config);
+                chicken = new ResourceChicken(this, new Location(world, x, 256, z), ResourceChickenType.valueOf(type.toUpperCase()), ResourceChicken.Rarity.randomRarity(), true, config);
             } else if (args.length == 0) {
-                chicken = new ResourceChicken(new Location(world, x, 256, z), ResourceChickenType.random(), ResourceChicken.Rarity.random(), true, config);
+                chicken = new ResourceChicken(this, new Location(world, x, 256, z), ResourceChickenType.random(), ResourceChicken.Rarity.randomRarity(), true, config);
             } else {
                 sender.sendMessage(ChatColor.RED + "Too many arguments");
                 return false;
@@ -139,7 +171,7 @@ public class Main extends JavaPlugin implements Listener {
             sender.sendMessage("There " + Pluralize.are(count) + " currently " + count + " chicken" + Pluralize.s(count) + " to be found");
         } else if (label.equalsIgnoreCase("chickenrecent")) {
             int time = (int)((System.currentTimeMillis() - recentTime) / 60000);
-            sender.sendMessage("The most recent chicken spawned " + time + " minute" + Pluralize.s(time) + " ago");
+            sender.sendMessage("The most recent chicken(s) spawned " + time + " minute" + Pluralize.s(time) + " ago");
         } else if (label.equalsIgnoreCase("rctimer")) {
             if (args.length == 2) {
                 try {
@@ -191,7 +223,7 @@ public class Main extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
-        ResourceChicken.reInit(event.getChunk().getEntities(), config);
+        ResourceChicken.reInit(this, event.getChunk().getEntities(), config);
     }
 
     @EventHandler
@@ -244,5 +276,10 @@ public class Main extends JavaPlugin implements Listener {
                 event.setCancelled(true);
             }
         }
+    }
+
+    public void scheduleBroadcast() {
+        broadcast = true;
+        bcCount++;
     }
 }
