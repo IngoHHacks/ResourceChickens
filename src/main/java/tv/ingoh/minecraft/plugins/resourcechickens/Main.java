@@ -11,7 +11,7 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -26,7 +26,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import io.github.starsdown64.Minecord.api.ExternalMessageEvent;
-import net.minecraft.server.v1_16_R3.WorldServer;
+import net.minecraft.server.level.WorldServer;
 import tv.ingoh.minecraft.plugins.resourcechickens.ResourceChicken.Rarity;
 import tv.ingoh.util.Pluralize;
 
