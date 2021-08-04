@@ -73,7 +73,7 @@ public enum ResourceChickenType {
             curPrb += type.weight;
             if (curPrb > prb) return type;
         }
-        return DIAMOND;
+        return INVALID;
     }
     
 

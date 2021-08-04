@@ -123,7 +123,7 @@ public class Main extends JavaPlugin implements Listener {
                         recentTime = System.currentTimeMillis();
                         Bukkit.getLogger().info("Summoned new [" + chicken.rarity.color + chicken.rarity.toString() + ChatColor.RESET + "] " + chicken.type.color + chicken.type.name + ChatColor.RESET + " at [" + x + ", " + z + "z]");
                     } catch (Exception e) {
-                        Bukkit.getLogger().warning("Failed to summon chicken");
+                        Bukkit.getLogger().warning("Failed to summon chicken.");
                         e.printStackTrace();
                     }
                 }
@@ -154,7 +154,7 @@ public class Main extends JavaPlugin implements Listener {
             } else if (args.length == 0) {
                 chicken = new ResourceChicken(this, new Location(world, x, 256, z), ResourceChickenType.random(), ResourceChicken.Rarity.randomRarity(), true, config);
             } else {
-                sender.sendMessage(ChatColor.RED + "Too many arguments");
+                sender.sendMessage(ChatColor.RED + "Too many arguments, idiot.");
                 return false;
             }
             try {
@@ -163,7 +163,7 @@ public class Main extends JavaPlugin implements Listener {
                 sender.sendMessage("Summoned new " + "[" + chicken.rarity.color + chicken.rarity.toString() + ChatColor.RESET + "] " + chicken.type.color + chicken.type.name + ChatColor.RESET + " at [" + x + "x, " + z + "z]");
             } catch (Exception e) {
                 e.printStackTrace();
-                sender.sendMessage(ChatColor.RED + "Failed to execute command");
+                sender.sendMessage(ChatColor.RED + "Failed to execute command, idiot.");
                 return false;
             }
         } else if (label.equalsIgnoreCase("chickencount")) {
@@ -181,11 +181,11 @@ public class Main extends JavaPlugin implements Listener {
                     next = System.currentTimeMillis() + config.getRandomDelay();
                     sender.sendMessage("Set timer to [" + args[0] + ", " + args[1] + "]");
                 } catch (NumberFormatException e) {
-                    sender.sendMessage(ChatColor.RED + "[" + args[0] + ", " + args[1] + "] is not a valid range.");
+                    sender.sendMessage(ChatColor.RED + "[" + args[0] + ", " + args[1] + "] is not a valid range, idiot.");
                 }
             } else {
-                if (args.length > 2) sender.sendMessage(ChatColor.RED + "Too many arguments");
-                else sender.sendMessage(ChatColor.RED + "Too few arguments");
+                if (args.length > 2) sender.sendMessage(ChatColor.RED + "Too many arguments, idiot.");
+                else sender.sendMessage(ChatColor.RED + "Too few arguments, idiot.");
                 return false;
             }
         } else if (label.equalsIgnoreCase("rcminecord")) {
@@ -196,11 +196,11 @@ public class Main extends JavaPlugin implements Listener {
                     if (config.minecord) sender.sendMessage("Enabled Minecord integration");
                     else sender.sendMessage("Disabled Minecord integration");
                 } catch (NumberFormatException e) {
-                    sender.sendMessage(ChatColor.RED + "[" + args[0] + ", " + args[1] + "] is not a valid range.");
+                    sender.sendMessage(ChatColor.RED + "[" + args[0] + ", " + args[1] + "] is not a valid range, idiot.");
                 }
             } else {
-                if (args.length > 1) sender.sendMessage(ChatColor.RED + "Too many arguments");
-                else sender.sendMessage(ChatColor.RED + "Too few arguments");
+                if (args.length > 1) sender.sendMessage(ChatColor.RED + "Too many arguments, idiot.");
+                else sender.sendMessage(ChatColor.RED + "Too few arguments, idiot.");
                 return false;
             }
         } else if (label.equalsIgnoreCase("rcradius")) {
@@ -210,11 +210,11 @@ public class Main extends JavaPlugin implements Listener {
                     config.save();
                     sender.sendMessage("Set radius to " + args[0]);
                 } catch (NumberFormatException e) {
-                    sender.sendMessage(ChatColor.RED + args[0] + " is not a valid radius.");
+                    sender.sendMessage(ChatColor.RED + args[0] + " is not a valid radius, idiot.");
                 }
             } else {
-                if (args.length > 1) sender.sendMessage(ChatColor.RED + "Too many arguments");
-                else sender.sendMessage(ChatColor.RED + "Too few arguments");
+                if (args.length > 1) sender.sendMessage(ChatColor.RED + "Too many arguments, idiot.");
+                else sender.sendMessage(ChatColor.RED + "Too few arguments, idiot.");
                 return false;
             }
         }

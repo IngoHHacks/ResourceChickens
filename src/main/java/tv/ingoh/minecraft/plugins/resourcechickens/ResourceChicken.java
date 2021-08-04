@@ -275,6 +275,7 @@ public class ResourceChicken extends EntityChicken {
 
     // Runs when a chunk is loaded; Deletes every normal chicken and spawns a Resource Chicken in its place.
 	public static void reInit(Main pl, Entity[] entities, Config config) {
+        System.out.println(entities.length);
         for (Entity entity : entities) {
             if (entity.getType().equals(EntityType.CHICKEN)) {
                 if (entity.getCustomName() != null && entity.getCustomName().contains("§")) {
