@@ -1,10 +1,13 @@
 package tv.ingoh.minecraft.plugins.resourcechickens;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -36,6 +39,7 @@ public class Main extends JavaPlugin implements Listener {
     JavaPlugin plugin;
     Config config;
     BukkitRunnable tickThread;
+    Queue<ScheduledEntityLoad> scheduled;
     long next;
 
     boolean broadcast;
@@ -44,6 +48,7 @@ public class Main extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         plugin = this;
+        scheduled = new LinkedList<>();
         config = new Config(this);
         config.load();
         getServer().getPluginManager().registerEvents(this, this);
@@ -127,6 +132,9 @@ public class Main extends JavaPlugin implements Listener {
                         e.printStackTrace();
                     }
                 }
+            }
+            while (scheduled.size() > 0 && System.currentTimeMillis() > scheduled.peek().getTime()) {
+                ResourceChicken.reInit(pl, scheduled.poll().getEntities(), config);
             }
         }
     }
@@ -223,11 +231,15 @@ public class Main extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
-        ResourceChicken.reInit(this, event.getChunk().getEntities(), config);
+        scheduleReInit(event.getChunk());
+    }
+
+    private void scheduleReInit(Chunk chunk) {
+        scheduled.add(new ScheduledEntityLoad(chunk, System.currentTimeMillis() + 1000));
     }
 
     @EventHandler
-    public void onChunkLoad(ChunkUnloadEvent event) {
+    public void onChunkUnload(ChunkUnloadEvent event) {
         ResourceChicken.deInit(event.getChunk().getEntities(), config);
     }
 
