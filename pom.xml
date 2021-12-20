@@ -5,7 +5,7 @@
 
   <groupId>tv.ingoh</groupId>
   <artifactId>ResourceChickens</artifactId>
-  <version>1.3.1</version>
+  <version>1.4.0</version>
 
   <name>ingoh-resourcechickens-plugin</name>
   <url>ingoh.tv</url>
@@ -30,14 +30,43 @@
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
-      <version>1.17.1-R0.1-SNAPSHOT</version>
+      <version>1.18.1-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot</artifactId>
-      <version>1.17</version>
-      <scope>provided</scope>
+      <version>1.18.1</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../spigot/spigot-1.18.1-R0.1-SNAPSHOT.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>com.mojang</groupId>
+      <artifactId>datafixerupper</artifactId>
+      <version>4.0.26</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../spigot/datafixerupper-4.0.26.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>org.apache</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>2.14.1</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../spigot/log4j-api-2.14.1.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>org.apache</groupId>
+      <artifactId>log4j</artifactId>
+      <version>2.14.1</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../spigot/log4j-core-2.14.1.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>com.mojang</groupId>
+      <artifactId>brigadier</artifactId>
+      <version>1.0.18</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../spigot/brigadier-1.0.18.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>io.github.StarsDown64</groupId>

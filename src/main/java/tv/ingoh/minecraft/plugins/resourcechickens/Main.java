@@ -14,7 +14,7 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_18_R1.CraftWorld;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -124,7 +124,7 @@ public class Main extends JavaPlugin implements Listener {
                     ResourceChicken chicken = new ResourceChicken(pl, new Location(world, x, 256, z), ResourceChickenType.random(), ResourceChicken.Rarity.randomRarity(), true, config);
                     try {
                         WorldServer worldServer = ((CraftWorld) world).getHandle();
-                        worldServer.addEntity(chicken);
+                        worldServer.a(chicken);
                         recentTime = System.currentTimeMillis();
                         Bukkit.getLogger().info("Summoned new [" + chicken.rarity.color + chicken.rarity.toString() + ChatColor.RESET + "] " + chicken.type.color + chicken.type.name + ChatColor.RESET + " at [" + x + ", " + z + "z]");
                     } catch (Exception e) {
@@ -167,7 +167,7 @@ public class Main extends JavaPlugin implements Listener {
             }
             try {
                 WorldServer worldServer = ((CraftWorld) world).getHandle();
-                worldServer.addEntity(chicken);
+                worldServer.a(chicken);
                 sender.sendMessage("Summoned new " + "[" + chicken.rarity.color + chicken.rarity.toString() + ChatColor.RESET + "] " + chicken.type.color + chicken.type.name + ChatColor.RESET + " at [" + x + "x, " + z + "z]");
             } catch (Exception e) {
                 e.printStackTrace();

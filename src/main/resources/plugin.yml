@@ -2,7 +2,7 @@ main: tv.ingoh.minecraft.plugins.resourcechickens.Main
 name: ResourceChickens
 author: IngoHHacks
 softdepend: [Minecord]
-version: 1.3.0
+version: 1.4.0
 api-version: 1.17
 commands:
  rc:
