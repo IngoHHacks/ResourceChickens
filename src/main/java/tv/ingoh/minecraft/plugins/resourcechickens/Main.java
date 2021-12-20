@@ -124,7 +124,7 @@ public class Main extends JavaPlugin implements Listener {
                     ResourceChicken chicken = new ResourceChicken(pl, new Location(world, x, 256, z), ResourceChickenType.random(), ResourceChicken.Rarity.randomRarity(), true, config);
                     try {
                         WorldServer worldServer = ((CraftWorld) world).getHandle();
-                        worldServer.a(chicken);
+                        worldServer.b(chicken);
                         recentTime = System.currentTimeMillis();
                         Bukkit.getLogger().info("Summoned new [" + chicken.rarity.color + chicken.rarity.toString() + ChatColor.RESET + "] " + chicken.type.color + chicken.type.name + ChatColor.RESET + " at [" + x + ", " + z + "z]");
                     } catch (Exception e) {
@@ -154,7 +154,7 @@ public class Main extends JavaPlugin implements Listener {
                 world = player.getWorld();
             }
             int x = (int) Math.round(2 * Math.random() * config.getRadius() + 160 - config.getRadius());
-            int z = (int) Math.round(2 * Math.random() * config.getRadius() + 208 - config.getRadius());   
+            int z = (int) Math.round(2 * Math.random() * config.getRadius() + 208 - config.getRadius());
             ResourceChicken chicken;
             if (args.length == 1) {
                 String type = args[0];
@@ -167,7 +167,7 @@ public class Main extends JavaPlugin implements Listener {
             }
             try {
                 WorldServer worldServer = ((CraftWorld) world).getHandle();
-                worldServer.a(chicken);
+                worldServer.b(chicken);
                 sender.sendMessage("Summoned new " + "[" + chicken.rarity.color + chicken.rarity.toString() + ChatColor.RESET + "] " + chicken.type.color + chicken.type.name + ChatColor.RESET + " at [" + x + "x, " + z + "z]");
             } catch (Exception e) {
                 e.printStackTrace();

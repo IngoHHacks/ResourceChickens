@@ -251,7 +251,7 @@ public class ResourceChicken extends EntityChicken {
         for (ItemStack itemStack : type.getLoot(bE(), rarity)) {
             t.getWorld().dropItem(new Location(t.getWorld(), cV().b, cV().c, cV().d), itemStack);
         }
-        PacketPlayOutChat packet = new PacketPlayOutChat(damagesource.a(this), ChatMessageType.a /*SYSTEM*/ , cm() /*UUID*/);
+        PacketPlayOutChat packet = new PacketPlayOutChat(damagesource.a(this), ChatMessageType.a /*SYSTEM*/, cm() /*UUID*/);
         Bukkit.getOnlinePlayers().forEach(player -> ((CraftPlayer) player).getHandle().b /*playerConnection*/ .a(packet));
         if (Bukkit.getServer().getPluginManager().getPlugin("Minecord") != null) {
             ExternalMessageEvent messageEvent = new ExternalMessageEvent(damagesource.a(this).getString());
@@ -296,7 +296,7 @@ public class ResourceChicken extends EntityChicken {
                     ResourceChicken chicken = new ResourceChicken(pl, entity.getLocation(), type, rarity, false, config);
                     try {
                         WorldServer worldServer = ((CraftWorld) entity.getWorld()).getHandle();
-                        worldServer.a(chicken);
+                        worldServer.b(chicken);
                         if (entity.isInsideVehicle()) {
                             Entity v = entity.getVehicle();
                             entity.leaveVehicle();
