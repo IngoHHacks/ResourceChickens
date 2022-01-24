@@ -15,7 +15,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
-import io.github.starsdown64.Minecord.api.ExternalMessageEvent;
+import io.github.starsdown64.minecord.api.ExternalMessageEvent;
 import net.minecraft.network.chat.ChatComponentText;
 import net.minecraft.network.chat.ChatMessageType;
 import net.minecraft.network.protocol.game.PacketPlayOutChat;

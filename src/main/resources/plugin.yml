@@ -2,8 +2,8 @@ main: tv.ingoh.minecraft.plugins.resourcechickens.Main
 name: ResourceChickens
 author: IngoHHacks
 softdepend: [Minecord]
-version: 1.4.0
-api-version: 1.17
+version: 1.4.1
+api-version: 1.18
 commands:
  rc:
   description: Summons a Resource Chicken.

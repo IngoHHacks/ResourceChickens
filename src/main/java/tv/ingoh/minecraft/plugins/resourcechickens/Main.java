@@ -28,7 +28,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import io.github.starsdown64.Minecord.api.ExternalMessageEvent;
+import io.github.starsdown64.minecord.api.ExternalMessageEvent;
 import net.minecraft.server.level.WorldServer;
 import tv.ingoh.minecraft.plugins.resourcechickens.ResourceChicken.Rarity;
 import tv.ingoh.util.Pluralize;
