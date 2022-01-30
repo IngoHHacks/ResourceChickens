@@ -69,11 +69,9 @@
       <systemPath>${project.basedir}/../spigot/brigadier-1.0.18.jar</systemPath>
     </dependency>
     <dependency>
-	    <groupId>io.github.StarsDown64</groupId>
-	    <artifactId>Minecord</artifactId>
-	    <version>1.6.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/lib/Minecord-1.6.0.jar</systemPath>
+      <groupId>com.github.StarsDown64</groupId>
+      <artifactId>Minecord-API</artifactId>
+      <version>1.0.0</version>
     </dependency>
   </dependencies>
   <build>
