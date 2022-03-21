@@ -5,7 +5,7 @@
 
   <groupId>tv.ingoh</groupId>
   <artifactId>ResourceChickens</artifactId>
-  <version>1.4.1</version>
+  <version>1.5.0</version>
 
   <name>ingoh-resourcechickens-plugin</name>
   <url>ingoh.tv</url>
@@ -13,8 +13,8 @@
   <packaging>jar</packaging>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>16</maven.compiler.source>
-    <maven.compiler.target>16</maven.compiler.target>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
   </properties>
   <repositories>
     <repository>
@@ -30,36 +30,36 @@
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
-      <version>1.18.1-R0.1-SNAPSHOT</version>
+      <version>1.18.2-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot</artifactId>
-      <version>1.18.1</version>
+      <version>1.18.2</version>
       <scope>system</scope>
-      <systemPath>${project.basedir}/../spigot/spigot-1.18.1-R0.1-SNAPSHOT.jar</systemPath>
+      <systemPath>${project.basedir}/../spigot/spigot-1.18.2-R0.1-SNAPSHOT.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>com.mojang</groupId>
       <artifactId>datafixerupper</artifactId>
-      <version>4.0.26</version>
+      <version>4.1.27</version>
       <scope>system</scope>
-      <systemPath>${project.basedir}/../spigot/datafixerupper-4.0.26.jar</systemPath>
+      <systemPath>${project.basedir}/../spigot/datafixerupper-4.1.27.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>org.apache</groupId>
       <artifactId>log4j-api</artifactId>
-      <version>2.14.1</version>
+      <version>2.17.0</version>
       <scope>system</scope>
-      <systemPath>${project.basedir}/../spigot/log4j-api-2.14.1.jar</systemPath>
+      <systemPath>${project.basedir}/../spigot/log4j-api-2.17.0.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>org.apache</groupId>
       <artifactId>log4j</artifactId>
-      <version>2.14.1</version>
+      <version>2.17.0</version>
       <scope>system</scope>
-      <systemPath>${project.basedir}/../spigot/log4j-core-2.14.1.jar</systemPath>
+      <systemPath>${project.basedir}/../spigot/log4j-core-2.17.0.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>com.mojang</groupId>

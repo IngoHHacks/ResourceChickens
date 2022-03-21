@@ -9,8 +9,8 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.craftbukkit.v1_18_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_18_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_18_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_18_R2.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
@@ -112,21 +112,21 @@ public class ResourceChicken extends EntityChicken {
     public void k() {
         super.k();
 
-        // t = world
+        // s = level
 
         switch (type) {
             case DIAMOND:
-                t.getWorld().spawnParticle(Particle.ITEM_CRACK,
-                        new Location(t.getWorld(), cV().b, cV().c + 0.35, cV().d), 3, 0.5, 0.5, 0.5, 0.1,
+                s.getWorld().spawnParticle(Particle.ITEM_CRACK,
+                        new Location(s.getWorld(), cV().b, cV().c + 0.35, cV().d), 3, 0.5, 0.5, 0.5, 0.1,
                         new ItemStack(Material.DIAMOND));
                 break;
             case AQUATIC:
-                t.getWorld().spawnParticle(Particle.DRIP_WATER,
-                        new Location(t.getWorld(), cV().b, cV().c  + 0.35, cV().d), 3, 0.5, 0.5, 0.5, 1);
+                s.getWorld().spawnParticle(Particle.DRIP_WATER,
+                        new Location(s.getWorld(), cV().b, cV().c  + 0.35, cV().d), 3, 0.5, 0.5, 0.5, 1);
                 break;
             case GOLDEN_APPLE:
-                t.getWorld().spawnParticle(Particle.ITEM_CRACK,
-                        new Location(t.getWorld(), cV().b, cV().c  + 0.35, cV().d), 3, 0.5, 0.5, 0.5, 0.1,
+                s.getWorld().spawnParticle(Particle.ITEM_CRACK,
+                        new Location(s.getWorld(), cV().b, cV().c  + 0.35, cV().d), 3, 0.5, 0.5, 0.5, 0.1,
                         new ItemStack(Material.GOLDEN_APPLE));
                 break;
             case LUCKY:
@@ -134,86 +134,86 @@ public class ResourceChicken extends EntityChicken {
                 for (double i = 0; i < 2 * Math.PI; i+= 0.2 * Math.PI) {
                     java.awt.Color color = new java.awt.Color(java.awt.Color.HSBtoRGB((float)(((time + (i/Math.PI * 3000.0)) % 3000.0)/3000.0), 1, 1));
                     Color c = Color.fromRGB(color.getRed(), color.getGreen(), color.getBlue());
-                    t.getWorld().spawnParticle(Particle.REDSTONE,
-                            new Location(t.getWorld(), cV().b + Math.sin(time/500.0 + i), cV().c + 0.35 + Math.sin(time/250.0 + i), cV().d + Math.cos(time/500.0 + i)), 1, 0.02, 0.02, 0.02, 1,
+                    s.getWorld().spawnParticle(Particle.REDSTONE,
+                            new Location(s.getWorld(), cV().b + Math.sin(time/500.0 + i), cV().c + 0.35 + Math.sin(time/250.0 + i), cV().d + Math.cos(time/500.0 + i)), 1, 0.02, 0.02, 0.02, 1,
                             new Particle.DustOptions(c, 1));
-                    t.getWorld().spawnParticle(Particle.REDSTONE,
-                            new Location(t.getWorld(), cV().b - Math.sin(time/500.0 + i), cV().c + 0.35 + Math.sin(time/250.0 + i), cV().d - Math.cos(time/500.0 + i)), 1, 0.02, 0.02, 0.02, 1,
+                    s.getWorld().spawnParticle(Particle.REDSTONE,
+                            new Location(s.getWorld(), cV().b - Math.sin(time/500.0 + i), cV().c + 0.35 + Math.sin(time/250.0 + i), cV().d - Math.cos(time/500.0 + i)), 1, 0.02, 0.02, 0.02, 1,
                             new Particle.DustOptions(c, 1));
                 }
                 break;
             case BASTION:
-                t.getWorld().spawnParticle(Particle.BLOCK_CRACK,
-                        new Location(t.getWorld(), cV().b, cV().c + 0.35, cV().d), 2, 0.5, 0.5, 0.5, 0.1,
+                s.getWorld().spawnParticle(Particle.BLOCK_CRACK,
+                        new Location(s.getWorld(), cV().b, cV().c + 0.35, cV().d), 2, 0.5, 0.5, 0.5, 0.1,
                         Material.POLISHED_BLACKSTONE_BRICKS.createBlockData());
-                t.getWorld().spawnParticle(Particle.BLOCK_CRACK,
-                        new Location(t.getWorld(), cV().b, cV().c + 0.35, cV().d), 1, 0.5, 0.5, 0.5, 0.1,
+                s.getWorld().spawnParticle(Particle.BLOCK_CRACK,
+                        new Location(s.getWorld(), cV().b, cV().c + 0.35, cV().d), 1, 0.5, 0.5, 0.5, 0.1,
                         Material.GILDED_BLACKSTONE.createBlockData());
                 break;
             case CAVE:
-                t.getWorld().spawnParticle(Particle.BLOCK_CRACK,
-                        new Location(t.getWorld(), cV().b, cV().c + 0.35, cV().d), 3, 0.5, 0.5, 0.5, 0.1,
+                s.getWorld().spawnParticle(Particle.BLOCK_CRACK,
+                        new Location(s.getWorld(), cV().b, cV().c + 0.35, cV().d), 3, 0.5, 0.5, 0.5, 0.1,
                         Material.STONE.createBlockData());
-                t.getWorld().spawnParticle(Particle.BLOCK_CRACK,
-                        new Location(t.getWorld(), cV().b, cV().c + 0.35, cV().d), 3, 0.5, 0.5, 0.5, 0.1,
+                s.getWorld().spawnParticle(Particle.BLOCK_CRACK,
+                        new Location(s.getWorld(), cV().b, cV().c + 0.35, cV().d), 3, 0.5, 0.5, 0.5, 0.1,
                         Material.DIAMOND_ORE.createBlockData());
                 break;
             case CONCRETE:
-                t.getWorld().spawnParticle(Particle.BLOCK_CRACK,
-                        new Location(t.getWorld(), cV().b, cV().c + 0.35, cV().d), 3, 0.5, 0.5, 0.5, 0.1,
+                s.getWorld().spawnParticle(Particle.BLOCK_CRACK,
+                        new Location(s.getWorld(), cV().b, cV().c + 0.35, cV().d), 3, 0.5, 0.5, 0.5, 0.1,
                         Material.WHITE_CONCRETE.createBlockData());
                 break;
             case DESERT:
-                t.getWorld().spawnParticle(Particle.BLOCK_CRACK,
-                        new Location(t.getWorld(), cV().b, cV().c + 0.35, cV().d), 3, 0.5, 0.5, 0.5, 0.1,
+                s.getWorld().spawnParticle(Particle.BLOCK_CRACK,
+                        new Location(s.getWorld(), cV().b, cV().c + 0.35, cV().d), 3, 0.5, 0.5, 0.5, 0.1,
                         Material.SAND.createBlockData());
                 break;
             case END:
-                t.getWorld().spawnParticle(Particle.BLOCK_CRACK,
-                        new Location(t.getWorld(), cV().b, cV().c + 0.35, cV().d), 3, 0.5, 0.5, 0.5, 0.1,
+                s.getWorld().spawnParticle(Particle.BLOCK_CRACK,
+                        new Location(s.getWorld(), cV().b, cV().c + 0.35, cV().d), 3, 0.5, 0.5, 0.5, 0.1,
                         Material.END_STONE.createBlockData());
                 break;
             case FOOD:
-                t.getWorld().spawnParticle(Particle.ITEM_CRACK,
-                        new Location(t.getWorld(), cV().b, cV().c + 0.35, cV().d), 3, 0.5, 0.5, 0.5, 0.1,
+                s.getWorld().spawnParticle(Particle.ITEM_CRACK,
+                        new Location(s.getWorld(), cV().b, cV().c + 0.35, cV().d), 3, 0.5, 0.5, 0.5, 0.1,
                         new ItemStack(Material.COOKED_CHICKEN));
                 break;
             case MUSIC:
-                t.getWorld().spawnParticle(Particle.NOTE,
-                        new Location(t.getWorld(), cV().b, cV().c + 0.35, cV().d), 3, 0.5, 0.5, 0.5, 0.1);
+                s.getWorld().spawnParticle(Particle.NOTE,
+                        new Location(s.getWorld(), cV().b, cV().c + 0.35, cV().d), 3, 0.5, 0.5, 0.5, 0.1);
                 break;
             case NETHER:
-                t.getWorld().spawnParticle(Particle.BLOCK_CRACK,
-                        new Location(t.getWorld(), cV().b, cV().c + 0.35, cV().d), 1, 0.5, 0.5, 0.5, 0.1,
+                s.getWorld().spawnParticle(Particle.BLOCK_CRACK,
+                        new Location(s.getWorld(), cV().b, cV().c + 0.35, cV().d), 1, 0.5, 0.5, 0.5, 0.1,
                         Material.NETHERRACK.createBlockData());
-                t.getWorld().spawnParticle(Particle.FLAME,
-                        new Location(t.getWorld(), cV().b, cV().c + 0.35, cV().d), 2, 0.5, 0.5, 0.5, 0.1);
+                s.getWorld().spawnParticle(Particle.FLAME,
+                        new Location(s.getWorld(), cV().b, cV().c + 0.35, cV().d), 2, 0.5, 0.5, 0.5, 0.1);
                 break;
             case OVERWORLD:
-                t.getWorld().spawnParticle(Particle.BLOCK_CRACK,
-                        new Location(t.getWorld(), cV().b, cV().c + 0.35, cV().d), 3, 0.5, 0.5, 0.5, 0.1,
+                s.getWorld().spawnParticle(Particle.BLOCK_CRACK,
+                        new Location(s.getWorld(), cV().b, cV().c + 0.35, cV().d), 3, 0.5, 0.5, 0.5, 0.1,
                         Material.GRASS_BLOCK.createBlockData());
                 break;
             case REDSTONE:
-                t.getWorld().spawnParticle(Particle.REDSTONE,
-                        new Location(t.getWorld(), cV().b, cV().c + 0.35, cV().d), 3, 0.5, 0.5, 0.5, 1,
+                s.getWorld().spawnParticle(Particle.REDSTONE,
+                        new Location(s.getWorld(), cV().b, cV().c + 0.35, cV().d), 3, 0.5, 0.5, 0.5, 1,
                         new Particle.DustOptions(Color.RED, 1));
                 break;
             case TERRACOTTA:
-                t.getWorld().spawnParticle(Particle.BLOCK_CRACK,
-                        new Location(t.getWorld(), cV().b, cV().c + 0.35, cV().d), 3, 0.5, 0.5, 0.5, 0.1,
+                s.getWorld().spawnParticle(Particle.BLOCK_CRACK,
+                        new Location(s.getWorld(), cV().b, cV().c + 0.35, cV().d), 3, 0.5, 0.5, 0.5, 0.1,
                         Material.TERRACOTTA.createBlockData());
                 break;
             case UNDYING:
-                t.getWorld().spawnParticle(Particle.TOTEM,
-                        new Location(t.getWorld(), cV().b, cV().c + 0.35, cV().d), 3, 0.5, 0.5, 0.5, 0.1);
+                s.getWorld().spawnParticle(Particle.TOTEM,
+                        new Location(s.getWorld(), cV().b, cV().c + 0.35, cV().d), 3, 0.5, 0.5, 0.5, 0.1);
                 break;
             case UNSTABLE:
-                t.getWorld().spawnParticle(Particle.ENCHANTMENT_TABLE,
-                        new Location(t.getWorld(), cV().b, cV().c + 0.35, cV().d), 10, 2.5, 2.5, 2.5, 0.1);
+                s.getWorld().spawnParticle(Particle.ENCHANTMENT_TABLE,
+                        new Location(s.getWorld(), cV().b, cV().c + 0.35, cV().d), 10, 2.5, 2.5, 2.5, 0.1);
                 if (System.currentTimeMillis() > nextEvent) {
                     nextEvent = (long) (500 + System.currentTimeMillis() + 4500 * Math.random());
-                    Location l = new Location(t.getWorld(), Math.round(cV().b - 8 + Math.random() * 16.0) + 0.5, Math.round(cV().c - 4 + Math.random() * 8.0), Math.round(cV().d - 8 + Math.random() * 16.0) + 0.5);
+                    Location l = new Location(s.getWorld(), Math.round(cV().b - 8 + Math.random() * 16.0) + 0.5, Math.round(cV().c - 4 + Math.random() * 8.0), Math.round(cV().d - 8 + Math.random() * 16.0) + 0.5);
                     if (l.getBlock().getType().equals(Material.AIR) && l.getY() > 0 && l.getY() < 256) b(l.getX(), l.getY(), l.getZ());
                 }
                 if (damageBufferTime != 0 && System.currentTimeMillis() > damageBufferTime && System.currentTimeMillis() > spawnTime + 5000) {
@@ -221,13 +221,13 @@ public class ResourceChicken extends EntityChicken {
                 }
                 break;
             case WITHER:
-                t.getWorld().spawnParticle(Particle.REDSTONE,
-                        new Location(t.getWorld(), cV().b, cV().c + 0.35, cV().d), 3, 0.5, 0.5, 0.5, 1,
+                s.getWorld().spawnParticle(Particle.REDSTONE,
+                        new Location(s.getWorld(), cV().b, cV().c + 0.35, cV().d), 3, 0.5, 0.5, 0.5, 1,
                         new Particle.DustOptions(Color.BLACK, 1));
                 break;
             case STABLE:
-                t.getWorld().spawnParticle(Particle.ENCHANTMENT_TABLE,
-                        new Location(t.getWorld(), cV().b, cV().c + 0.35, cV().d), 10, 2.5, 2.5, 2.5, 0.1);
+                s.getWorld().spawnParticle(Particle.ENCHANTMENT_TABLE,
+                        new Location(s.getWorld(), cV().b, cV().c + 0.35, cV().d), 10, 2.5, 2.5, 2.5, 0.1);
                 if (damageBufferTime != 0 && System.currentTimeMillis() > damageBufferTime && System.currentTimeMillis() > spawnTime + 5000) {
                     a(damageBufferSource, damageBuffer);
                 }
@@ -236,7 +236,7 @@ public class ResourceChicken extends EntityChicken {
                 break;
         }
         if (!found) {
-            Collection<Entity> near = t.getWorld().getNearbyEntities(new Location(t.getWorld(), cV().b, cV().c, cV().d), 10, 10, 10, (entity -> entity.getType() == EntityType.PLAYER));
+            Collection<Entity> near = s.getWorld().getNearbyEntities(new Location(s.getWorld(), cV().b, cV().c, cV().d), 10, 10, 10, (entity -> entity.getType() == EntityType.PLAYER));
             if (near.size() > 0) {
                 found = true;
             }
@@ -249,7 +249,7 @@ public class ResourceChicken extends EntityChicken {
     protected void a(DamageSource damagesource, int i, boolean flag) {
         super.a(damagesource, i, flag);
         for (ItemStack itemStack : type.getLoot(bE(), rarity)) {
-            t.getWorld().dropItem(new Location(t.getWorld(), cV().b, cV().c, cV().d), itemStack);
+            s.getWorld().dropItem(new Location(s.getWorld(), cV().b, cV().c, cV().d), itemStack);
         }
         PacketPlayOutChat packet = new PacketPlayOutChat(damagesource.a(this), ChatMessageType.a /*SYSTEM*/, cm() /*UUID*/);
         Bukkit.getOnlinePlayers().forEach(player -> ((CraftPlayer) player).getHandle().b /*playerConnection*/ .a(packet));
