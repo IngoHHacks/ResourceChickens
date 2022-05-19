@@ -1,2 +1,3 @@
 # ResourceChickens
-Minecraft Resource Chicken Plugin
+Minecraft Resource Chicken Plugin  
+(Not intended for public use)
