@@ -213,7 +213,7 @@ public class ResourceChicken extends EntityChicken {
                         new Location(s.getWorld(), cV().b, cV().c + 0.35, cV().d), 10, 2.5, 2.5, 2.5, 0.1);
                 if (System.currentTimeMillis() > nextEvent) {
                     nextEvent = (long) (500 + System.currentTimeMillis() + 4500 * Math.random());
-                    Location l = new Location(s.getWorld(), Math.round(cV().b - 8 + Math.random() * 16.0) + 0.5, Math.round(cV().c - 4 + Math.random() * 8.0), Math.round(cV().d - 8 + Math.random() * 16.0) + 0.5);
+                    Location l = new Location(s.getWorld(), Math.floor(cV().b - 8 + Math.random() * 16.0) + 0.5, Math.round(cV().c - 4 + Math.random() * 8.0), Math.floor(cV().d - 8 + Math.random() * 16.0) + 0.5);
                     if (l.getBlock().getType().equals(Material.AIR) && l.getY() > 0 && l.getY() < 256) b(l.getX(), l.getY(), l.getZ());
                 }
                 if (damageBufferTime != 0 && System.currentTimeMillis() > damageBufferTime && System.currentTimeMillis() > spawnTime + 5000) {
