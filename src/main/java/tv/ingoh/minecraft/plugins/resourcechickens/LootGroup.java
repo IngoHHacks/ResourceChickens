@@ -63,4 +63,19 @@ public class LootGroup extends Drops {
         items.add(ChatColor.DARK_PURPLE + "[END OF LIST]");
         return items;
     }
+
+    @Override
+    ArrayList<String> listRaw() {
+        ArrayList<String> items = new ArrayList<>();
+        items.add("[LIST]");
+        double totalPrb = 0;
+        for (Loot l : loot) {
+            totalPrb += l.prb;
+        }
+        for (Loot l : loot) {
+            items.addAll(l.listRaw(prb / totalPrb));
+        }
+        items.add("[END OF LIST]");
+        return items;
+    }
 }
