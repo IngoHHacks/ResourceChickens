@@ -5,7 +5,7 @@
 
   <groupId>tv.ingoh</groupId>
   <artifactId>ResourceChickens</artifactId>
-  <version>1.5.1</version>
+  <version>1.6.0</version>
 
   <name>ingoh-resourcechickens-plugin</name>
   <url>ingoh.tv</url>
@@ -30,15 +30,22 @@
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
-      <version>1.18.2-R0.1-SNAPSHOT</version>
+      <version>1.19-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot</artifactId>
-      <version>1.18.2</version>
+      <version>1.19.0-R0.1-SNAPSHOT</version>
       <scope>system</scope>
-      <systemPath>${project.basedir}/../spigot/spigot-1.18.2-R0.1-SNAPSHOT.jar</systemPath>
+      <systemPath>${project.basedir}/../spigot/spigot-1.19-R0.1-SNAPSHOT.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>org.bukkit</groupId>
+      <artifactId>craftbukkit</artifactId>
+      <version>1.19.0-R0.1-SNAPSHOT</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../spigot/craftbukkit-1.19-R0.1-SNAPSHOT.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>com.mojang</groupId>
