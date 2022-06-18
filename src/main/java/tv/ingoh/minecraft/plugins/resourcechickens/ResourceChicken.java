@@ -248,7 +248,6 @@ public class ResourceChicken extends EntityChicken {
     @Override
     protected void a(DamageSource damagesource, int i, boolean flag) {
         super.a(damagesource, i, flag);
-        // CHECK: !!
         if (!Q /* NoPhysics */) {
             for (ItemStack itemStack : type.getLoot(bI(), rarity)) {
                 s.getWorld().dropItem(new Location(s.getWorld(), cZ().c, cZ().d, cZ().e), itemStack);
