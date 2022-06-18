@@ -248,10 +248,13 @@ public class ResourceChicken extends EntityChicken {
     @Override
     protected void a(DamageSource damagesource, int i, boolean flag) {
         super.a(damagesource, i, flag);
-        for (ItemStack itemStack : type.getLoot(bI(), rarity)) {
-            s.getWorld().dropItem(new Location(s.getWorld(), cZ().c, cZ().d, cZ().e), itemStack);
+        // CHECK: !!
+        if (!Q /* NoPhysics */) {
+            for (ItemStack itemStack : type.getLoot(bI(), rarity)) {
+                s.getWorld().dropItem(new Location(s.getWorld(), cZ().c, cZ().d, cZ().e), itemStack);
+            }
         }
-        ClientboundSystemChatPacket packet = new ClientboundSystemChatPacket(damagesource.a(this), 2);
+        ClientboundSystemChatPacket packet = new ClientboundSystemChatPacket(damagesource.a(this), 1);
         Bukkit.getOnlinePlayers().forEach(player -> ((CraftPlayer) player).getHandle().b /*playerConnection*/ .a(packet));
         if (Bukkit.getServer().getPluginManager().getPlugin("Minecord") != null) {
             ExternalMessageEvent messageEvent = new ExternalMessageEvent(damagesource.a(this).getString());
