@@ -42,11 +42,11 @@ public class Loot extends Drops {
     }
 
     @Override
-    public ArrayList<ItemStack> getLoot(boolean isBurning, Rarity rarity) {
-        return getLoot(isBurning, rarity, false);
+    public ArrayList<ItemStack> getLoot(boolean isBurning, Rarity rarity, int looting) {
+        return getLoot(isBurning, rarity, looting, false);
     }
 
-    public ArrayList<ItemStack> getLoot(boolean isBurning, Rarity rarity, boolean force) {
+    public ArrayList<ItemStack> getLoot(boolean isBurning, Rarity rarity, int looting, boolean force) {
         Material tItem = item;
         
         // Change sand type items to red sand type if burning
@@ -59,9 +59,9 @@ public class Loot extends Drops {
         int count = min;
         if (exponential) while (Math.random() < expIncPrb && count < max);
         else count = (int)(Math.round(Math.random() * (max - min)) + min);
-        count *= rarity.dropMultiplier;
+        count *= rarity.dropMultiplier * Looting.getDropMultiplier(looting);
         ArrayList<ItemStack> itemStacks = new ArrayList<>();
-        double rng = Math.random() / rarity.luckMultiplier;
+        double rng = Math.random() / rarity.luckMultiplier / Looting.getLuckMultiplier(looting);
         if (force || rng < prb) {
             // Split items into stacks
             int stacks = count / tItem.getMaxStackSize();

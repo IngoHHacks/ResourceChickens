@@ -10,11 +10,11 @@ import tv.ingoh.minecraft.plugins.resourcechickens.ResourceChicken.Rarity;
 public class Simulate {
     
     public static void main(String[] args) {
-        simulate(ResourceChickenType.WITHER, Rarity.EPIC);
+        simulate(ResourceChickenType.WITHER, Rarity.EPIC, 0);
     }
 
-    private static void simulate(ResourceChickenType type, Rarity rarity) {
-        ArrayList<ItemStack> list = type.getLoot(false, rarity);
+    private static void simulate(ResourceChickenType type, Rarity rarity, int looting) {
+        ArrayList<ItemStack> list = type.getLoot(false, rarity, looting);
         list.forEach(item -> {
             System.out.println(item.getAmount() + "*" + item.getType());
         });

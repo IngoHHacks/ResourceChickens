@@ -150,6 +150,13 @@ public class ResourceChicken extends EntityChicken {
                         new Location(s.getWorld(), cZ().c, cZ().d + 0.35, cZ().e), 1, 0.5, 0.5, 0.5, 0.1,
                         Material.GILDED_BLACKSTONE.createBlockData());
                 break;
+            case ANCIENT:
+                s.getWorld().spawnParticle(Particle.SCULK_SOUL,
+                        new Location(s.getWorld(), cZ().c, cZ().d + 0.35, cZ().e), 2, 0.5, 0.5, 0.5, 0.1);
+                s.getWorld().spawnParticle(Particle.BLOCK_CRACK,
+                        new Location(s.getWorld(), cZ().c, cZ().d + 0.35, cZ().e), 1, 0.5, 0.5, 0.5, 0.1,
+                        Material.SCULK.createBlockData());
+                break;
             case CAVE:
                 s.getWorld().spawnParticle(Particle.BLOCK_CRACK,
                         new Location(s.getWorld(), cZ().c, cZ().d + 0.35, cZ().e), 3, 0.5, 0.5, 0.5, 0.1,
@@ -249,7 +256,7 @@ public class ResourceChicken extends EntityChicken {
     protected void a(DamageSource damagesource, int i, boolean flag) {
         super.a(damagesource, i, flag);
         if (!Q /* NoPhysics */) {
-            for (ItemStack itemStack : type.getLoot(bI(), rarity)) {
+            for (ItemStack itemStack : type.getLoot(bI(), rarity, i)) {
                 s.getWorld().dropItem(new Location(s.getWorld(), cZ().c, cZ().d, cZ().e), itemStack);
             }
         }

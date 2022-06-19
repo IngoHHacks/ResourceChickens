@@ -46,10 +46,10 @@ public enum ResourceChickenType {
         this.weight = weight;
     }
 
-    public ArrayList<ItemStack> getLoot(boolean isBurning, Rarity rarity) {
+    public ArrayList<ItemStack> getLoot(boolean isBurning, Rarity rarity, int looting) {
         ArrayList<ItemStack> drops = new ArrayList<>();
         for (Drops l : loot) {
-            drops.addAll(l.getLoot(isBurning, rarity));
+            drops.addAll(l.getLoot(isBurning, rarity, looting));
         }
         return drops;
     }

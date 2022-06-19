@@ -26,7 +26,7 @@ public class LootGroup extends Drops {
     }
 
     @Override
-    ArrayList<ItemStack> getLoot(boolean isBurning, Rarity rarity) {
+    ArrayList<ItemStack> getLoot(boolean isBurning, Rarity rarity, int looting) {
         ArrayList<ItemStack> items = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             double totalPrb = 0;
@@ -38,9 +38,9 @@ public class LootGroup extends Drops {
             for (Loot l : loot) {
                 curPrb += l.prb;
                 if (curPrb > prb2) {
-                    double rng = Math.random() / rarity.luckMultiplier;
+                    double rng = Math.random() / rarity.luckMultiplier / Looting.getLuckMultiplier(looting);
                     if (rng < prb) {
-                        items.addAll(l.getLoot(isBurning, rarity, true));
+                        items.addAll(l.getLoot(isBurning, rarity, looting, true));
                     }
                     break;
                 }
