@@ -3,6 +3,7 @@ package tv.ingoh.minecraft.plugins.resourcechickens;
 import java.util.ArrayList;
 
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
 import org.bukkit.ChatColor;
@@ -66,7 +67,11 @@ public class Loot extends Drops {
             int stacks = count / tItem.getMaxStackSize();
             int items = count % tItem.getMaxStackSize();
             for (int i = 0; i < stacks; i++) itemStacks.add(new ItemStack(tItem, tItem.getMaxStackSize()));
-            if (items > 0) itemStacks.add(new ItemStack(tItem, items));
+            ItemStack stack = new ItemStack(tItem, items);
+            if (tItem == Material.ENCHANTED_BOOK) {
+                stack.getItemMeta().addEnchant(Enchantment.SWEEPING_EDGE, (int)(Math.random() * 3), false);
+            }
+            if (items > 0) itemStacks.add(stack);
         }
         return itemStacks;
     }
