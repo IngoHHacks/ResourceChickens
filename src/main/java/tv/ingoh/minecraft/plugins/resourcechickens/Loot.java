@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
-
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.ChatColor;
 import tv.ingoh.minecraft.plugins.resourcechickens.ResourceChicken.Rarity;
 
@@ -68,10 +68,16 @@ public class Loot extends Drops {
             int items = count % tItem.getMaxStackSize();
             for (int i = 0; i < stacks; i++) itemStacks.add(new ItemStack(tItem, tItem.getMaxStackSize()));
             ItemStack stack = new ItemStack(tItem, items);
-            if (tItem == Material.ENCHANTED_BOOK) {
-                stack.getItemMeta().addEnchant(Enchantment.SWEEPING_EDGE, (int)(Math.random() * 3), false);
+            if (items > 0) {
+                itemStacks.add(stack);
             }
-            if (items > 0) itemStacks.add(stack);
+        }
+        for (ItemStack stack : itemStacks) {
+            if (tItem == Material.ENCHANTED_BOOK) {
+                EnchantmentStorageMeta eMeta = (EnchantmentStorageMeta)stack.getItemMeta();
+                eMeta.addStoredEnchant(Enchantment.SWIFT_SNEAK, (int)(1 + Math.random() * 3), false);
+                stack.setItemMeta(eMeta);
+            }
         }
         return itemStacks;
     }
