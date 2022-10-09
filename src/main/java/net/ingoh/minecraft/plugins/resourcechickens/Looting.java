@@ -1,4 +1,4 @@
-package tv.ingoh.minecraft.plugins.resourcechickens;
+package net.ingoh.minecraft.plugins.resourcechickens;
 
 public class Looting {
     public static double getLuckMultiplier(int looting) {

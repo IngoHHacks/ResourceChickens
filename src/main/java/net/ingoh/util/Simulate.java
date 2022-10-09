@@ -1,11 +1,11 @@
-package tv.ingoh.util;
+package net.ingoh.util;
 
 import java.util.ArrayList;
 
 import org.bukkit.inventory.ItemStack;
 
-import tv.ingoh.minecraft.plugins.resourcechickens.ResourceChickenType;
-import tv.ingoh.minecraft.plugins.resourcechickens.ResourceChicken.Rarity;
+import net.ingoh.minecraft.plugins.resourcechickens.ResourceChickenType;
+import net.ingoh.minecraft.plugins.resourcechickens.ResourceChicken.Rarity;
 
 public class Simulate {
     

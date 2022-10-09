@@ -1,4 +1,4 @@
-package tv.ingoh.minecraft.plugins.resourcechickens;
+package net.ingoh.minecraft.plugins.resourcechickens;
 
 import org.bukkit.Chunk;
 import org.bukkit.entity.Entity;
