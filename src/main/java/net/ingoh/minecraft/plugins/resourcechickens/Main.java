@@ -14,7 +14,7 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.craftbukkit.v1_19_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_19_R2.CraftWorld;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -29,7 +29,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import io.github.starsdown64.minecord.api.ExternalMessageEvent;
-import net.minecraft.server.level.WorldServer;
+import net.minecraft.server.level.ServerLevel;
 import net.ingoh.minecraft.plugins.resourcechickens.ResourceChicken.Rarity;
 import net.ingoh.util.Pluralize;
 
@@ -123,8 +123,8 @@ public class Main extends JavaPlugin implements Listener {
                     int z = (int) Math.round(2 * Math.random() * config.getRadius() + 208 - config.getRadius());
                     ResourceChicken chicken = new ResourceChicken(pl, new Location(world, x, 320, z), ResourceChickenType.random(), ResourceChicken.Rarity.randomRarity(), true, config);
                     try {
-                        WorldServer worldServer = ((CraftWorld) world).getHandle();
-                        worldServer.b(chicken);
+                        ServerLevel worldServer = ((CraftWorld) world).getHandle();
+                        worldServer.addFreshEntity(chicken);
                         recentTime = System.currentTimeMillis();
                         Bukkit.getLogger().info("Summoned new [" + chicken.rarity.color + chicken.rarity.toString() + ChatColor.RESET + "] " + chicken.type.color + chicken.type.name + ChatColor.RESET + " at [" + x + ", " + z + "z]");
                     } catch (Exception e) {
@@ -158,16 +158,16 @@ public class Main extends JavaPlugin implements Listener {
             ResourceChicken chicken;
             if (args.length == 1) {
                 String type = args[0];
-                chicken = new ResourceChicken(this, new Location(world, x, 256, z), ResourceChickenType.valueOf(type.toUpperCase()), ResourceChicken.Rarity.randomRarity(), true, config);
+                chicken = new ResourceChicken(this, new Location(world, x, 320, z), ResourceChickenType.valueOf(type.toUpperCase()), ResourceChicken.Rarity.randomRarity(), true, config);
             } else if (args.length == 0) {
-                chicken = new ResourceChicken(this, new Location(world, x, 256, z), ResourceChickenType.random(), ResourceChicken.Rarity.randomRarity(), true, config);
+                chicken = new ResourceChicken(this, new Location(world, x, 320, z), ResourceChickenType.random(), ResourceChicken.Rarity.randomRarity(), true, config);
             } else {
                 sender.sendMessage(ChatColor.RED + "Too many arguments, idiot.");
                 return false;
             }
             try {
-                WorldServer worldServer = ((CraftWorld) world).getHandle();
-                worldServer.b(chicken);
+                ServerLevel worldServer = ((CraftWorld) world).getHandle();
+                worldServer.addFreshEntity(chicken);
                 sender.sendMessage("Summoned new " + "[" + chicken.rarity.color + chicken.rarity.toString() + ChatColor.RESET + "] " + chicken.type.color + chicken.type.name + ChatColor.RESET + " at [" + x + "x, " + z + "z]");
             } catch (Exception e) {
                 e.printStackTrace();

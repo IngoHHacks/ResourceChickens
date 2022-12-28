@@ -5,7 +5,7 @@
 
   <groupId>net.ingoh</groupId>
   <artifactId>ResourceChickens</artifactId>
-  <version>1.8.0</version>
+  <version>1.9.0</version>
 
   <name>ingoh-resourcechickens-plugin</name>
   <url>ingoh.net</url>
@@ -13,6 +13,7 @@
   <packaging>jar</packaging>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <java.version>17</java.version>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
   </properties>
@@ -25,78 +26,111 @@
       <id>jitpack.io</id>
       <url>https://jitpack.io</url>
     </repository>
+    <repository>
+      <id>dv8tion</id>
+      <name>m2-dv8tion</name>
+      <url>https://m2.dv8tion.net/releases</url>
+    </repository>
+    <repository>
+      <id>sonatype</id>
+      <url>https://oss.sonatype.org/content/groups/public/</url>
+    </repository>
   </repositories>
   <dependencies>
     <dependency>
-      <groupId>org.spigotmc</groupId>
-      <artifactId>spigot-api</artifactId>
-      <version>1.19.2-R0.1-SNAPSHOT</version>
-      <scope>provided</scope>
+      <groupId>net.dv8tion</groupId>
+      <artifactId>JDA</artifactId>
+      <version>4.3.0_279</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.12.0</version>
     </dependency>
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot</artifactId>
-      <version>1.19.2-R0.1-SNAPSHOT</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../spigot/spigot-1.19.2-R0.1-SNAPSHOT.jar</systemPath>
-    </dependency>
-    <dependency>
-      <groupId>org.bukkit</groupId>
-      <artifactId>craftbukkit</artifactId>
-      <version>1.19.2</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../spigot/craftbukkit-1.19.2.jar</systemPath>
-    </dependency>
-    <dependency>
-      <groupId>com.mojang</groupId>
-      <artifactId>datafixerupper</artifactId>
-      <version>4.1.27</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../spigot/datafixerupper-4.1.27.jar</systemPath>
-    </dependency>
-    <dependency>
-      <groupId>org.apache</groupId>
-      <artifactId>log4j-api</artifactId>
-      <version>2.17.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../spigot/log4j-api-2.17.0.jar</systemPath>
-    </dependency>
-    <dependency>
-      <groupId>org.apache</groupId>
-      <artifactId>log4j</artifactId>
-      <version>2.17.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../spigot/log4j-core-2.17.0.jar</systemPath>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>api</artifactId>
-      <version>1.8.0-beta4</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../spigot/slf4j-api-1.8.0-beta4.jar</systemPath>
-    </dependency>
-    <dependency>
-      <groupId>com.mojang</groupId>
-      <artifactId>brigadier</artifactId>
-      <version>1.0.18</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../spigot/brigadier-1.0.18.jar</systemPath>
+      <version>1.19.3-R0.1-SNAPSHOT</version>
+      <scope>provided</scope>
+      <classifier>remapped-mojang</classifier>
     </dependency>
     <dependency>
       <groupId>com.github.StarsDown64</groupId>
       <artifactId>Minecord-API</artifactId>
       <version>1.0.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mongodb</groupId>
+      <artifactId>mongodb-driver-sync</artifactId>
+      <version>4.4.1</version>
     </dependency>
   </dependencies>
   <build>
-    <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
+        <configuration>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.2.4</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <createDependencyReducedPom>false</createDependencyReducedPom>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>net.md-5</groupId>
+        <artifactId>specialsource-maven-plugin</artifactId>
+        <version>1.2.4</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>remap</goal>
+            </goals>
+            <id>remap-obf</id>
+            <configuration>
+              <srgIn>org.spigotmc:minecraft-server:1.19.3-R0.1-SNAPSHOT:txt:maps-mojang</srgIn>
+              <reverse>true</reverse>
+              <remappedDependencies>org.spigotmc:spigot:1.19.3-R0.1-SNAPSHOT:jar:remapped-mojang</remappedDependencies>
+              <remappedArtifactAttached>true</remappedArtifactAttached>
+              <remappedClassifierName>remapped-obf</remappedClassifierName>
+            </configuration>
+          </execution>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>remap</goal>
+            </goals>
+            <id>remap-spigot</id>
+            <configuration>
+              <inputFile>${project.build.directory}/${project.artifactId}-${project.version}-remapped-obf.jar</inputFile>
+              <srgIn>org.spigotmc:minecraft-server:1.19.3-R0.1-SNAPSHOT:csrg:maps-spigot</srgIn>
+              <remappedDependencies>org.spigotmc:spigot:1.19.3-R0.1-SNAPSHOT:jar:remapped-obf</remappedDependencies>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
     <resources>
       <resource>
-        <directory>${project.basedir}/src/main/resources</directory>
-        <includes>
-          <include>plugin.yml</include>
-          <include>config.yml</include>
-        </includes>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
       </resource>
     </resources>
   </build>
