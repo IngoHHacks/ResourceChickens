@@ -1,8 +1,10 @@
 package net.ingoh.minecraft.plugins.resourcechickens;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.entity.EquipmentSlot;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -10,8 +12,8 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.craftbukkit.v1_19_R2.CraftWorld;
-import org.bukkit.craftbukkit.v1_19_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_19_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_19_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
@@ -21,7 +23,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundSystemChatPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.animal.Chicken;
 import net.minecraft.world.item.Items;
 
@@ -282,36 +283,32 @@ public class ResourceChicken extends Chicken {
 
     // Runs when a chunk is loaded; Deletes every normal chicken and spawns a Resource Chicken in its place.
 	public static void reInit(Main pl, Entity[] entities, Config config) {
-        for (Entity entity : entities) {
-            if (entity.getType().equals(EntityType.CHICKEN)) {
-                if (entity.getCustomName() != null && entity.getCustomName().contains("§")) {
-                    ResourceChickenType type = ResourceChickenType.INVALID;
-                    for (ResourceChickenType t : ResourceChickenType.values()) {
-                        if (entity.getCustomName().contains(t.name)) {
-                            type = t;
-                        }
-                    }
-                    Rarity rarity = Rarity.SPECIAL;
-                    for (Rarity r : Rarity.values()) {
-                        if (entity.getCustomName().contains(r.name())) {
-                            rarity = r;
-                        }
-                    }
-                    ResourceChicken chicken = new ResourceChicken(pl, entity.getLocation(), type, rarity, false, config);
-                    try {
-                        ServerLevel worldServer = ((CraftWorld) entity.getWorld()).getHandle();
-                        worldServer.addFreshEntity(chicken);
-                        if (entity.isInsideVehicle()) {
-                            Entity v = entity.getVehicle();
-                            entity.leaveVehicle();
-                            v.addPassenger(chicken.getBukkitEntity());
-                        }
-                        entity.remove();
-                    } catch (Exception e) {
-                        Bukkit.getLogger().warning("Failed to re-initialize " + entity.getCustomName());
-                        e.printStackTrace();
-                    }
+        for (Entity entity : Arrays.stream(entities).takeWhile(entity -> entity.getType().equals(EntityType.CHICKEN) && entity.getCustomName() != null && entity.getCustomName().contains("§")).toList()) {
+            ResourceChickenType type = ResourceChickenType.INVALID;
+            for (ResourceChickenType t : ResourceChickenType.values()) {
+                if (entity.getCustomName().contains(t.name)) {
+                    type = t;
                 }
+            }
+            Rarity rarity = Rarity.SPECIAL;
+            for (Rarity r : Rarity.values()) {
+                if (entity.getCustomName().contains(r.name())) {
+                    rarity = r;
+                }
+            }
+            ResourceChicken chicken = new ResourceChicken(pl, entity.getLocation(), type, rarity, false, config);
+            try {
+                ServerLevel worldServer = ((CraftWorld) entity.getWorld()).getHandle();
+                worldServer.addFreshEntity(chicken);
+                if (entity.isInsideVehicle()) {
+                    Entity v = entity.getVehicle();
+                    entity.leaveVehicle();
+                    v.addPassenger(chicken.getBukkitEntity());
+                }
+                entity.remove();
+            } catch (Exception e) {
+                Bukkit.getLogger().warning("Failed to re-initialize " + entity.getCustomName());
+                e.printStackTrace();
             }
         }
 	}
@@ -346,7 +343,7 @@ public class ResourceChicken extends Chicken {
                     damageBufferSource = damagesource;
                 }
                 damageBuffer += f;
-                if (damagesource.equals(DamageSource.LIGHTNING_BOLT)) {
+                if (damagesource.is(DamageTypeTags.IS_LIGHTNING)) {
                         if (type.equals(ResourceChickenType.UNSTABLE)) type = ResourceChickenType.STABLE;
                         else if (type.equals(ResourceChickenType.STABLE)) type = ResourceChickenType.UNSTABLE;
                         spawnTime = System.currentTimeMillis();
