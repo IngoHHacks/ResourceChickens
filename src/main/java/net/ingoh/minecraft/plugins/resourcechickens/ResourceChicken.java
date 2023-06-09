@@ -6,14 +6,15 @@ import java.util.LinkedList;
 
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.level.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.craftbukkit.v1_19_R3.CraftWorld;
-import org.bukkit.craftbukkit.v1_19_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_20_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_20_R1.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
@@ -110,6 +111,8 @@ public class ResourceChicken extends Chicken {
     @Override
     public void tick() {
         super.tick();
+
+        Level level = this.level();
 
         switch (type) {
             case DIAMOND:
@@ -250,6 +253,7 @@ public class ResourceChicken extends Chicken {
 
     @Override
     protected void dropCustomDeathLoot(DamageSource damagesource, int i, boolean flag) {
+        Level level = this.level();
         super.dropCustomDeathLoot(damagesource, i, flag);
         if (!noPhysics) {
             for (ItemStack itemStack : type.getLoot(isOnFire(), rarity, i)) {

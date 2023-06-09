@@ -14,7 +14,7 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.craftbukkit.v1_19_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_20_R1.CraftWorld;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -179,12 +179,14 @@ public class Main extends JavaPlugin implements Listener {
             sender.sendMessage("There " + Pluralize.are(count) + " currently " + count + " chicken" + Pluralize.s(count) + " to be found");
         } else if (label.equalsIgnoreCase("chickenrecent")) {
             int time = (int)((System.currentTimeMillis() - recentTime) / 60000);
-            sender.sendMessage("The most recent chicken(s) spawned " + time + " minute" + Pluralize.s(time) + " ago");
+            String p = "chicken(s)";
+            if (!config.mchickens) p = "chicken";
+            sender.sendMessage("The most recent " + p + " spawned " + time + " minute" + Pluralize.s(time) + " ago");
         } else if (label.equalsIgnoreCase("rctimer")) {
             if (args.length == 2) {
                 try {
-                    config.min = Math.min(Integer.valueOf(args[0]), Integer.valueOf(args[1]));
-                    config.max = Math.max(Integer.valueOf(args[0]), Integer.valueOf(args[1]));
+                    config.min = Math.min(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
+                    config.max = Math.max(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
                     config.save();
                     next = System.currentTimeMillis() + config.getRandomDelay();
                     sender.sendMessage("Set timer to [" + args[0] + ", " + args[1] + "]");
@@ -214,7 +216,7 @@ public class Main extends JavaPlugin implements Listener {
         } else if (label.equalsIgnoreCase("rcradius")) {
             if (args.length == 1) {
                 try {
-                    config.radius = Integer.valueOf(args[0]);
+                    config.radius = Integer.parseInt(args[0]);
                     config.save();
                     sender.sendMessage("Set radius to " + args[0]);
                 } catch (NumberFormatException e) {
