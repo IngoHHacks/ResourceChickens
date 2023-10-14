@@ -5,6 +5,7 @@
 
   <groupId>net.ingoh</groupId>
   <artifactId>ResourceChickens</artifactId>
+
   <version>1.12.0</version>
 
   <name>ingoh-resourcechickens-plugin</name>
