@@ -2,13 +2,13 @@ main: net.ingoh.minecraft.plugins.resourcechickens.Main
 name: ResourceChickens
 author: IngoH
 softdepend: [Minecord]
-version: 1.11.0
+version: 1.12.0
 api-version: "1.20"
 commands:
  rc:
   description: Summons a Resource Chicken.
   permission: resourcechickens.rc
-  usage: /<command> (type)
+  usage: /<command> (type) (rarity) (x) (y) (z)
  rctimer:
   description: Sets the minimum and maximum delay for the Resource Chicken timer.
   permission: resourcechickens.rctimer

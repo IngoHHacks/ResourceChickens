@@ -3,6 +3,7 @@ package net.ingoh.minecraft.plugins.resourcechickens;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -29,7 +30,7 @@ import net.minecraft.world.item.Items;
 
 public class ResourceChicken extends Chicken {
 
-    private static LinkedList<LoadedChicken> loadedChickens = new LinkedList<>();
+    static LinkedList<LoadedChicken> loadedChickens = new LinkedList<>();
 
     Config config;
     ResourceChickenType type;
@@ -266,7 +267,6 @@ public class ResourceChicken extends Chicken {
             ExternalMessageEvent messageEvent = new ExternalMessageEvent(damagesource.getLocalizedDeathMessage(this).getString());
             Bukkit.getPluginManager().callEvent(messageEvent);
         }
-
         LoadedChicken c = null;
         for (LoadedChicken chicken : loadedChickens) {
             if (chicken.uuid.equals(uuid)) {
@@ -285,9 +285,13 @@ public class ResourceChicken extends Chicken {
         return c;
 	}
 
-    // Runs when a chunk is loaded; Deletes every normal chicken and spawns a Resource Chicken in its place.
-	public static void reInit(Main pl, Entity[] entities, Config config) {
-        for (Entity entity : Arrays.stream(entities).takeWhile(entity -> entity.getType().equals(EntityType.CHICKEN) && entity.getCustomName() != null && entity.getCustomName().contains("§")).toList()) {
+    // Runs when entities are loaded; Deletes every normal marked chicken and spawns a Resource Chicken in its place.
+	public static void reInit(Main pl, Config config, List<Entity> entities) {
+        if (entities.isEmpty()) return;
+        for (Entity entity : entities) {
+            if (!entity.getType().equals(EntityType.CHICKEN) || entity.getCustomName() == null || !entity.getCustomName().contains("§")) {
+                continue;
+            }
             ResourceChickenType type = ResourceChickenType.INVALID;
             for (ResourceChickenType t : ResourceChickenType.values()) {
                 if (entity.getCustomName().contains(t.name)) {
@@ -317,19 +321,18 @@ public class ResourceChicken extends Chicken {
         }
 	}
 
-    public static void deInit(Entity[] entities, Config config) {
+    public static void deInit(Config config, List<Entity> entities) {
+        if (entities.isEmpty()) return;
         for (Entity entity : entities) {
-            if (entity.getType().equals(EntityType.CHICKEN)) {
-                if (entity.getCustomName() != null && entity.getCustomName().contains("§")) {
-                    LoadedChicken c = null;
-                    for (LoadedChicken chicken : loadedChickens) {
-                        if (chicken.uuid.equals(entity.getUniqueId())) {
-                            c = chicken;
-                            break;
-                        }                    
+            if (entity.getType().equals(EntityType.CHICKEN) && entity.getCustomName() != null && entity.getCustomName().contains("§")) {
+                LoadedChicken c = null;
+                for (LoadedChicken chicken : loadedChickens) {
+                    if (chicken.uuid.equals(entity.getUniqueId())) {
+                        c = chicken;
+                        break;
                     }
-                    if (c != null) loadedChickens.remove(c);
                 }
+                if (c != null) loadedChickens.remove(c);
             }
         }
     }

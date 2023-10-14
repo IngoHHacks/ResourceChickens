@@ -6,6 +6,8 @@ public class Config {
 
     int min;
     int max;
+    int centerX;
+    int centerZ;
     int radius;
     JavaPlugin plugin;
     int defaultDimension;
@@ -22,6 +24,13 @@ public class Config {
         double rng = Math.random();
 		return (int) (rng * (max - min) + min);
     }
+
+    public int getCenterX() {
+        return centerX;
+    }
+    public int getCenterZ() {
+        return centerZ;
+    }
     
     public int getRadius() {
         return radius;
@@ -34,6 +43,8 @@ public class Config {
 	public void save() {
         plugin.getConfig().set("min-timer", min);
         plugin.getConfig().set("max-timer", max);
+        plugin.getConfig().set("center-x", centerX);
+        plugin.getConfig().set("center-z", centerZ);
         plugin.getConfig().set("radius", radius);
         plugin.getConfig().set("default-dimension", defaultDimension);
         plugin.getConfig().set("minecord", minecord);
@@ -44,6 +55,8 @@ public class Config {
 	public void load() {
         min = (int) plugin.getConfig().get("min-timer");
         max = (int) plugin.getConfig().get("max-timer");
+        centerX = (int) plugin.getConfig().get("center-x");
+        centerZ = (int) plugin.getConfig().get("center-z");
         radius = (int) plugin.getConfig().get("radius");
         defaultDimension = (int) plugin.getConfig().get("default-dimension");
         minecord = (boolean) plugin.getConfig().get("minecord");
